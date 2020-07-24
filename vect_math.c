@@ -4,14 +4,6 @@
 #define WIDTH 800
 #define HEIGHT 600
 
-/*
-typedef struct s_vector
-{
-    float x;
-    float y;
-    float z;
-}               t_vector;*/
-
 typedef struct s_pos
 {
     float x;
