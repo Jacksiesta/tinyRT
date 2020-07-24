@@ -4,19 +4,13 @@
 #define WIDTH 800
 #define HEIGHT 600
 
+/*
 typedef struct s_vector
 {
     float x;
     float y;
     float z;
-}               t_vector;
-
-typedef struct s_ray
-{
-    t_vector start;
-    t_vector direction;
-
-}               t_ray;
+}               t_vector;*/
 
 typedef struct s_pos
 {
@@ -25,34 +19,48 @@ typedef struct s_pos
     float z;
 }               t_pos;
 
+typedef struct s_ray
+{
+    t_pos start;
+    t_pos direction;
+
+}               t_ray;
+
 typedef struct s_sphere
 {
-    t_vector position;
+    t_pos position;
     float radius;
     int colour;
 }               t_sphere;
 
-t_vector    vectorAdd(t_vector *v1, t_vector *v2)
+t_pos    vectorAdd(t_pos *v1, t_pos *v2)
 {
-    t_vector result = {v1->x + v2->x, v1->y + v2->y, v1->z + v2->z};
+    t_pos result = {v1->x + v2->x, v1->y + v2->y, v1->z + v2->z};
     return (result);
 }
 
-t_vector    vectorSub(t_vector *v1, t_vector *v2)
+t_pos    vectorSub(t_pos *v1, t_pos *v2)
 {
-    t_vector result = {v1->x - v2->x, v1->y - v2->y, v1->z - v2->z};
+    t_pos result = {v1->x - v2->x, v1->y - v2->y, v1->z - v2->z};
     return (result);
 }
 
-float   vectorDot(t_vector *v1, t_vector *v2)
+float   vectorDot(t_pos *v1, t_pos *v2)
 {
     return (v1->x * v2->x + v1->y * v2->y + v1->z * v2->z);
 }
 
-t_vector    vectorScale(float c, t_vector *v)
+t_pos    vectorScale(float c, t_pos*v)
 {
-    t_vector result = {v->x * c, v->y * c, v->z * c};
+    t_pos result = {v->x * c, v->y * c, v->z * c};
     return (result);
+}
+
+void    set_xyz(t_pos *position, float x, float y, float z)
+{
+    position->x = x;
+    position->y = y;
+    position->z = z;
 }
 
 bool    intersect_ray_sphere(t_ray *ray, t_sphere *sphere)
@@ -61,7 +69,7 @@ bool    intersect_ray_sphere(t_ray *ray, t_sphere *sphere)
     float       B;
     float       C;
     float       discr;
-    t_vector    dist_ray_sphere;
+    t_pos    dist_ray_sphere;
 
     dist_ray_sphere = vectorSub(&ray->start, &sphere->position);
     A = vectorDot(&ray->direction, &ray->direction);
@@ -95,14 +103,16 @@ int main(int argc, char *argv[])
     int y;
     bool touch;
 
-    sphere.position.x = 400;
-    sphere.position.y = 200;
-    sphere.position.z = 100;
+    set_xyz(&sphere.position, 600, 400, 100);
+//    sphere.position.x = 600;
+//    sphere.position.y = 400;
+//    sphere.position.z = 100;
     sphere.radius = 100;
 
-    ray.direction.x = 0;
-    ray.direction.y = 0;
-    ray.direction.z = 1;
+    set_xyz(&ray.direction, 0, 0, 1);
+//    ray.direction.x = 0;
+//    ray.direction.y = 0;
+//    ray.direction.z = 1;
 
     ray.start.z = 0;
 
@@ -127,10 +137,6 @@ int main(int argc, char *argv[])
             }
         }
     }
-
     saveppm("image_test.ppm", img, WIDTH, HEIGHT);
     return (0);
 }
-
-
-
