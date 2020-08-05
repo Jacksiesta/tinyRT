@@ -1,5 +1,7 @@
 #include "minilibx_opengl_20191021/mlx.h"
 #include <stdlib.h>
+#include <stdbool.h>
+#include <stdio.h>
 
 typedef struct 	s_pos
 {
@@ -33,6 +35,24 @@ typedef struct	s_canvas
 	int	height;
 	int	distance;	
 }		t_canvas;
+
+typedef struct s_lstobject
+{
+	int	type;
+	void	*object;
+	void	*next;	
+}		t_lstobject;
+
+t_lstobject	*create_obj(int t, void *o)
+{
+	t_lstobject	*obj;
+	
+	obj = malloc(sizeof(t_lstobject));
+	obj->type = t;
+	obj->object = o;
+	obj->next = NULL;
+	return (obj);	
+}
 
 // insert (x,y,z) values in t_pos variable + ret pos
 t_pos		*create_pos(int x, int y, int z)
@@ -92,6 +112,12 @@ int		dot_product(t_pos pos1, t_pos pos2)
 	return (pos1.x * pos2.x + pos1.y * pos2.y + pos1.z * pos2.z);
 }
 
+t_pos		vectorSub(t_pos *v1, t_pos *v2)
+{
+	t_pos result = {v1->x - v2->x, v1->y - v2->y, v1->z - v2->z};
+	return (result);	
+}
+
 double		ft_squrt(int nb)
 {
 	int x;
@@ -115,6 +141,7 @@ t_pos2d		*intersect(t_pos origin, t_pos pixel, t_sphere sphere)
 	int	k[3];
 	int	discr;
 	
+	//difference = vectorSub(&origin, sphere.position);
 	difference = create_pos(origin.x - pixel.x, origin.y - pixel.y, origin.z - pixel.z);
 	k[0] = dot_product(pixel, pixel); //A
 	k[1] = 2 * dot_product(*difference, pixel); //B
@@ -123,7 +150,8 @@ t_pos2d		*intersect(t_pos origin, t_pos pixel, t_sphere sphere)
 	discr = k[1] * k[1] - 4 * k[0] * k[2]; // B * B - 4 * A * C
 	if (discr < 0) // no intersection
 		return (NULL);
-	return (create_pos2d((-k[1] + ft_squrt(discr)) / (2 * k[0]), (-k[1] - ft_squrt(discr)) / (2 * k[0])));	
+	else	
+		return (create_pos2d((-k[1] + ft_squrt(discr)) / (2 * k[0]), (-k[1] - ft_squrt(discr)) / (2 * k[0])));	
 }
 
 int main(void)
@@ -139,12 +167,12 @@ int main(void)
 	int		y;
 
 	mlx_ptr = mlx_init();
-	win_ptr = mlx_new_window(mlx_ptr, 480, 480, "Salut");
+	win_ptr = mlx_new_window(mlx_ptr, 400, 400, "Salut");
 
 	obs_pos = create_pos(0, 0, 0);
-	viewport = create_canvas(480, 480, 0);
+	viewport = create_canvas(300, 300, 0);
 	sphere = create_sphere(10, 0xffc0cb);
-	set_pos(sphere->position, 20, 20, 20);
+	set_pos(sphere->position, 350, 350, 1200);
 	x = 0;
 	while (x < viewport->width)
 	{
@@ -153,6 +181,7 @@ int main(void)
 		{
 			checking_pixel = create_pos(x, y, viewport->distance);
 			pos2d = intersect(*obs_pos, *checking_pixel, *sphere);
+			printf("pos2d[x] is %f && pos2d[y] is %f\n", pos2d->x, pos2d->y);
 			if (!pos2d)
 				mlx_pixel_put(mlx_ptr, win_ptr, x, y, 0x0);
 			else
