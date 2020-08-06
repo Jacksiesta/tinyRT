@@ -122,37 +122,36 @@ double		ft_squrt_bin(int nb, int p)
 {
 	int 	left;
 	int 	right;
-	int 	mid;
+	float 	mid;
 	float 	res;
-	float 	incr;
-	int	x;
 
 	right = nb;
+	left = 0;
 	while (left <= right)
 	{
 		mid = (left + right) / 2;
-		if (mid * mid == nb)
+		if (mid * mid == nb || mid * mid < nb)
 		{
 			res = mid;
-			break; //	
-		}
-		if (mid * mid < nb)
-		{
-			left = mid + 1;
-			res = mid;	
+			if (mid * mid == nb)
+				break;
+			else
+				left = mid + 1;
 		}
 		else
-			right = mid + 1;
+			right = mid - 1;
 	}
-	incr = 0.1;
-	while (x < p)
+	left = 0;
+	mid = 0.1;
+	while (left++ < p)
 	{
 		while (res * res <= nb)
-			res += incr;
-		res -= incr;
-		incr /= 10;
-		x++;	
+			res += mid;
+		res -= mid;
+		mid /= 10;
 	}
+	printf("res is [%f]\n", res);
+	return (res);
 }
 
 
@@ -174,7 +173,7 @@ t_pos2d		*intersect(t_pos origin, t_pos pixel, void *s)
 	discr = k[1] * k[1] - 4 * k[0] * k[2]; // B * B - 4 * A * C
 	if (discr < 0) // no intersection
 		return (NULL);
-	return(create_pos2d((-k[1] + ft_squrt(discr)) / (2 * k[0]), (-k[1] - ft_squrt(discr)) / (2 * k[0])));
+	return(create_pos2d((-k[1] + ft_squrt_bin(discr, 5)) / (2 * k[0]), (-k[1] - ft_squrt_bin(discr, 5)) / (2 * k[0])));
 	free(difference);
 	//return (ret);
 }
@@ -215,18 +214,18 @@ int main(void)
 	win_ptr = mlx_new_window(mlx_ptr, 400, 400, "Wouhou");
 
 	obs_pos = create_pos(0, 0, 0);
-	viewport = create_canvas(380, 380, 0);
-	sphere = create_sphere(50, 0xffc0cb);
-	set_pos(sphere->position, 100, 100, 100);
+	//viewport = create_canvas(380, 380, -100);
+	sphere = create_sphere(10, 0xffc0cb);
+	set_pos(sphere->position, 100, 100, -100);
 	x = 0;
 	while (x < 400)
 	{
 		y = 0;
 		while (y < 400)
 		{
-			pix = create_pos(x, y, viewport->distance);
+			pix = create_pos(x, y, 50);
 			pos2d = intersect(*obs_pos, *pix, sphere);
-			//printf("pos2d is %f && %f", pos2d->x, pos2d->y);
+			printf("pos2d is %f && %f\n", pos2d->x, pos2d->y);
 			if (!pos2d)
 				mlx_pixel_put(mlx_ptr, win_ptr, x, y, 0x0);
 			else
