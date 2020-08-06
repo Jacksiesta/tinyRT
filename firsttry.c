@@ -230,8 +230,8 @@ int main(void)
 	t_pos2d		*pos2d;
 	t_canvas	*viewport;
 	t_sphere	*sphere;
-	t_lstobject	*lstobj;
-	t_lstobject	*begin;
+	//t_lstobject	*lstobj;
+	//t_lstobject	*begin;
 	int		x;
 	int		y;
 	int		printed;
@@ -243,11 +243,11 @@ int main(void)
 	obs_pos = create_pos(0, 0, 0);
 	sphere = create_sphere(10, 0xffc0cb);
 	set_pos(sphere->position, -75, -75, 120);
-	lstobj = create_obj(0, sphere);
-	begin = lstobj;
-	sphere = create_sphere(25, 0x87ceff);
-	set_pos(sphere->position, 75, 75, 200);
-	lstobj->next = create_obj(0, sphere);
+	//lstobj = create_obj(0, sphere);
+	//begin = lstobj;
+	//sphere = create_sphere(25, 0x87ceff);
+	//set_pos(sphere->position, 75, 75, 200);
+	//lstobj->next = create_obj(0, sphere);
 	x = -viewport->width/2;
 	while (x < viewport->width/2)
 	{
@@ -255,24 +255,24 @@ int main(void)
 		while (y < viewport->height/2)
 		{
 			printed = 0;
-			while (lstobj)
+			while (2)
 			{
 				pixel = create_pos(x / viewport->width, y / viewport->height, viewport->distance);
-				pos2d = intersect(*obs_pos, *pixel, lstobj->object);
+				pos2d = intersect(*obs_pos, *pixel, sphere);
 				if (pos2d)
 				{	
 					printed = 1;
-					mlx_pixel_put(mlx_ptr, win_ptr, x + viewport->width/2, y + viewport->height/2, ((t_sphere *)(lstobj->object))->color);
+					mlx_pixel_put(mlx_ptr, win_ptr, x + viewport->width/2, y + viewport->height/2, sphere->color);
 				}
 				free(pos2d);
 				pos2d = NULL;
 				free(pixel);
 				pixel = NULL;
-				lstobj = lstobj->next;
+				//lstobj = lstobj->next;
 			}
 			if (!printed)
 				mlx_pixel_put(mlx_ptr, win_ptr, x + viewport->width/2, y + viewport->height/2, 0x0);
-			lstobj = begin;
+			//lstobj = begin;
 			y++;			
 		}
 		x++;
