@@ -118,20 +118,41 @@ t_pos		vectorSub(t_pos *v1, t_pos *v2)
 	return (result);	
 }
 
-double		ft_squrt(int nb)
+double		ft_squrt_bin(int nb, int p)
 {
-	int x;
+	int 	left;
+	int 	right;
+	int 	mid;
+	float 	res;
+	float 	incr;
+	int	x;
 
-	x = 1;
-	if (nb < 0)
-		return (0);
-	if (nb == 0 || nb == 0)
-		return (nb);
-	while ((x * x) < nb)
-		x++;
-	if ((x * x) == nb)
-		return (x);
-	return (x);
+	right = nb;
+	while (left <= right)
+	{
+		mid = (left + right) / 2;
+		if (mid * mid == nb)
+		{
+			res = mid;
+			break; //	
+		}
+		if (mid * mid < nb)
+		{
+			left = mid + 1;
+			res = mid;	
+		}
+		else
+			right = mid + 1;
+	}
+	incr = 0.1;
+	while (x < p)
+	{
+		while (res * res <= nb)
+			res += incr;
+		res -= incr;
+		incr /= 10;
+		x++;	
+	}
 }
 
 
@@ -144,7 +165,7 @@ t_pos2d		*intersect(t_pos origin, t_pos pixel, void *s)
 	t_sphere	sphere;
 	t_pos2d		*ret;
 	
-	sphere = *(t_sphere*)(s);
+	//sphere = *(t_sphere*)(s);
 	difference = create_pos(origin.x - sphere.position->x, origin.y - sphere.position->y, origin.z - sphere.position->z);
 	k[0] = dot_product(pixel, pixel); //A
 	k[1] = 2 * dot_product(*difference, pixel); //B
@@ -153,9 +174,9 @@ t_pos2d		*intersect(t_pos origin, t_pos pixel, void *s)
 	discr = k[1] * k[1] - 4 * k[0] * k[2]; // B * B - 4 * A * C
 	if (discr < 0) // no intersection
 		return (NULL);
-	ret = create_pos2d((-k[1] + ft_squrt(discr)) / (2 * k[0]), (-k[1] - ft_squrt(discr)) / (2 * k[0]));
+	return(create_pos2d((-k[1] + ft_squrt(discr)) / (2 * k[0]), (-k[1] - ft_squrt(discr)) / (2 * k[0])));
 	free(difference);
-	return (ret);
+	//return (ret);
 }
 
 /*
@@ -177,6 +198,64 @@ bool	intersect_ray_sphere(t_ray *ray, t_sphere *sphere)
 	else
 		return (true);
 }*/
+
+int main(void)
+{
+	void		*mlx_ptr;
+	void		*win_ptr;
+	t_pos		*obs_pos;
+	t_pos		*pix;
+	t_pos2d		*pos2d;
+	t_canvas	*viewport;
+	t_sphere	*sphere;
+	int		x;
+	int		y;
+
+	mlx_ptr = mlx_init();
+	win_ptr = mlx_new_window(mlx_ptr, 400, 400, "Wouhou");
+
+	obs_pos = create_pos(0, 0, 0);
+	viewport = create_canvas(380, 380, 0);
+	sphere = create_sphere(50, 0xffc0cb);
+	set_pos(sphere->position, 100, 100, 100);
+	x = 0;
+	while (x < 400)
+	{
+		y = 0;
+		while (y < 400)
+		{
+			pix = create_pos(x, y, viewport->distance);
+			pos2d = intersect(*obs_pos, *pix, sphere);
+			//printf("pos2d is %f && %f", pos2d->x, pos2d->y);
+			if (!pos2d)
+				mlx_pixel_put(mlx_ptr, win_ptr, x, y, 0x0);
+			else
+				mlx_pixel_put(mlx_ptr, win_ptr, x, y, sphere->color);
+			free(pos2d);
+			pos2d = NULL;	
+			y++;
+		}
+		x++;
+	}
+	mlx_loop(mlx_ptr);	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
 int main(void)
 {
@@ -220,62 +299,3 @@ int main(void)
 	mlx_loop(mlx_ptr);
 }*/
 
-
-int main(void)
-{
-	void		*mlx_ptr;
-	void		*win_ptr;
-	t_pos		*obs_pos;
-	t_pos		*pixel;
-	t_pos2d		*pos2d;
-	t_canvas	*viewport;
-	t_sphere	*sphere;
-	//t_lstobject	*lstobj;
-	//t_lstobject	*begin;
-	int		x;
-	int		y;
-	int		printed;
-
-	mlx_ptr = mlx_init();
-	viewport = create_canvas(300, 300, 1);
-	win_ptr = mlx_new_window(mlx_ptr, viewport->width, viewport->height, "Salut");
-
-	obs_pos = create_pos(0, 0, 0);
-	sphere = create_sphere(10, 0xffc0cb);
-	set_pos(sphere->position, -75, -75, 120);
-	//lstobj = create_obj(0, sphere);
-	//begin = lstobj;
-	//sphere = create_sphere(25, 0x87ceff);
-	//set_pos(sphere->position, 75, 75, 200);
-	//lstobj->next = create_obj(0, sphere);
-	x = -viewport->width/2;
-	while (x < viewport->width/2)
-	{
-		y = -viewport->height/2;
-		while (y < viewport->height/2)
-		{
-			printed = 0;
-			while (2)
-			{
-				pixel = create_pos(x / viewport->width, y / viewport->height, viewport->distance);
-				pos2d = intersect(*obs_pos, *pixel, sphere);
-				if (pos2d)
-				{	
-					printed = 1;
-					mlx_pixel_put(mlx_ptr, win_ptr, x + viewport->width/2, y + viewport->height/2, sphere->color);
-				}
-				free(pos2d);
-				pos2d = NULL;
-				free(pixel);
-				pixel = NULL;
-				//lstobj = lstobj->next;
-			}
-			if (!printed)
-				mlx_pixel_put(mlx_ptr, win_ptr, x + viewport->width/2, y + viewport->height/2, 0x0);
-			//lstobj = begin;
-			y++;			
-		}
-		x++;
-	}
-	mlx_loop(mlx_ptr);
-}
