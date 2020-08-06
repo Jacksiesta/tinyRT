@@ -118,6 +118,8 @@ t_pos		vectorSub(t_pos *v1, t_pos *v2)
 	return (result);	
 }
 
+#include <math.h>
+
 double		ft_squrt_bin(int nb, int p)
 {
 	int 	left;
@@ -150,6 +152,8 @@ double		ft_squrt_bin(int nb, int p)
 		res -= mid;
 		mid /= 10;
 	}
+	printf("Number nb is %d\n", nb);
+	printf("real res is [%f]\n", sqrt(nb));
 	printf("res is [%f]\n", res);
 	return (res);
 }
@@ -166,11 +170,15 @@ t_pos2d		*intersect(t_pos origin, t_pos pixel, void *s)
 	
 	//sphere = *(t_sphere*)(s);
 	difference = create_pos(origin.x - sphere.position->x, origin.y - sphere.position->y, origin.z - sphere.position->z);
+	printf("difference is %f && %f\n", difference->x, difference->y);
 	k[0] = dot_product(pixel, pixel); //A
 	k[1] = 2 * dot_product(*difference, pixel); //B
 	k[2] = dot_product(*difference, *difference) - (sphere.radius * sphere.radius); //C
 	
 	discr = k[1] * k[1] - 4 * k[0] * k[2]; // B * B - 4 * A * C
+	printf("A is %f\n", k[0]);
+	printf("B is %f\n", k[1]);
+	printf("C is %f\n", k[2]);
 	if (discr < 0) // no intersection
 		return (NULL);
 	return(create_pos2d((-k[1] + ft_squrt_bin(discr, 5)) / (2 * k[0]), (-k[1] - ft_squrt_bin(discr, 5)) / (2 * k[0])));
@@ -216,7 +224,7 @@ int main(void)
 	obs_pos = create_pos(0, 0, 0);
 	//viewport = create_canvas(380, 380, -100);
 	sphere = create_sphere(10, 0xffc0cb);
-	set_pos(sphere->position, 100, 100, -100);
+	set_pos(sphere->position, 300, 300, 50);
 	x = 0;
 	while (x < 400)
 	{

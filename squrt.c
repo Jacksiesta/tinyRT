@@ -1,5 +1,17 @@
 #include <stdio.h>
 
+float	ft_sqrt(const float x)
+{
+	int	i;
+	float j;
+
+	j = x;
+	i = (1 << 29) + (i >> 1) - (1 << 22);
+	j = 0.5f * (j + x/j);
+	j = 0.5f * (j + x/j);
+	return (j);
+}
+
 double		ft_squrt(int nb, int p)
 {
 	int 	left;
@@ -39,6 +51,6 @@ int main(void)
 {
 	double x;
 
-	x = ft_squrt(50, 3);
+	x = ft_sqrt(50);
 	printf("%f\n", x);
 }
