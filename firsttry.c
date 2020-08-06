@@ -134,6 +134,7 @@ double		ft_squrt(int nb)
 	return (x);
 }
 
+
 // returns (x,y) of intersections
 t_pos2d		*intersect(t_pos origin, t_pos pixel, void *s)
 {
@@ -141,7 +142,7 @@ t_pos2d		*intersect(t_pos origin, t_pos pixel, void *s)
 	double		k[3];
 	double		discr;
 	t_sphere	sphere;
-	t_pos2d		ret;
+	t_pos2d		*ret;
 	
 	sphere = *(t_sphere*)(s);
 	difference = create_pos(origin.x - sphere.position->x, origin.y - sphere.position->y, origin.z - sphere.position->z);
@@ -157,6 +158,69 @@ t_pos2d		*intersect(t_pos origin, t_pos pixel, void *s)
 	return (ret);
 }
 
+/*
+bool	intersect_ray_sphere(t_ray *ray, t_sphere *sphere)
+{
+	float 	A;
+	float 	B;
+	float 	C;
+	float	discr;
+	t_pos	dist_r_sph;
+	
+	dist_r_sph = vectorSub(&ray->position, sphere->position);
+	A = dot_product(ray->direction, ray->direction);
+	B = 2 * dot_product(ray->direction, dist_r_sph);
+	C = dot_product(dist_r_sph, dist_r_sph) - (sphere->radius * sphere->radius);
+	discr = B * B - 4 * A * C;
+	if (discr < 0)
+		return (false);
+	else
+		return (true);
+}*/
+/*
+int main(void)
+{
+	void		*mlx_ptr;
+	void		*win_ptr;
+	//t_pos		*obs_pos;
+	t_sphere	sphere;
+	int		x;
+	int		y;
+	bool		touch;
+	t_ray		ray;
+
+	mlx_ptr = mlx_init();
+	win_ptr = mlx_new_window(mlx_ptr, 600, 600, "Oui");
+	set_pos(&sphere.position, 200, 200, 100);
+	//sphere = *create_sphere(50, 0x87ceff);
+	sphere.radius = 50;
+	sphere.color = 0xffc0cb;
+	printf("oui\n");
+	set_pos(&ray.direction, 0, 0, 1);
+	ray.position.z = 0;
+	y = 0;
+	while (y < 600)
+	{
+		ray.position.y = y;
+		x = 0;
+		while (x < 600)
+		{
+			ray.position.x = x;
+			touch = intersect_ray_sphere(&ray, &sphere);
+			if (!touch)
+				mlx_pixel_put(mlx_ptr, win_ptr, x, y, 0x0);	
+			else
+				mlx_pixel_put(mlx_ptr, win_ptr, x, y, sphere.color);	
+			
+			x++;	
+		}
+		y++;
+		
+	}
+	mlx_loop(mlx_ptr);
+}*/
+
+
 int main(void)
 {
 	void		*mlx_ptr;
@@ -166,7 +230,7 @@ int main(void)
 	t_pos2d		*pos2d;
 	t_canvas	*viewport;
 	t_sphere	*sphere;
-	t_lstobject	*ltsobj;
+	t_lstobject	*lstobj;
 	t_lstobject	*begin;
 	int		x;
 	int		y;
@@ -193,18 +257,22 @@ int main(void)
 			printed = 0;
 			while (lstobj)
 			{
-				
-				
+				pixel = create_pos(x / viewport->width, y / viewport->height, viewport->distance);
+				pos2d = intersect(*obs_pos, *pixel, lstobj->object);
+				if (pos2d)
+				{	
+					printed = 1;
+					mlx_pixel_put(mlx_ptr, win_ptr, x + viewport->width/2, y + viewport->height/2, ((t_sphere *)(lstobj->object))->color);
 				}
-			checking_pixel = create_pos(x, y, viewport->distance);
-			pos2d = intersect(*obs_pos, *checking_pixel, *sphere);
-			printf("pos2d[x] is %f && pos2d[y] is %f\n", pos2d->x, pos2d->y);
-			if (!pos2d)
-				mlx_pixel_put(mlx_ptr, win_ptr, x, y, 0x0);
-			else
-				mlx_pixel_put(mlx_ptr, win_ptr, x, y, sphere->color);
-			free(pos2d);
-			pos2d = NULL;
+				free(pos2d);
+				pos2d = NULL;
+				free(pixel);
+				pixel = NULL;
+				lstobj = lstobj->next;
+			}
+			if (!printed)
+				mlx_pixel_put(mlx_ptr, win_ptr, x + viewport->width/2, y + viewport->height/2, 0x0);
+			lstobj = begin;
 			y++;			
 		}
 		x++;
