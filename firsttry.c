@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <math.h>
 
 typedef struct 	s_pos
 {
@@ -118,8 +119,6 @@ t_pos		vectorSub(t_pos *v1, t_pos *v2)
 	return (result);	
 }
 
-#include <math.h>
-
 double		ft_squrt_bin(float nb, int p)
 {
 	int 	left;
@@ -198,28 +197,7 @@ float		intersect(t_pos obs, t_pos pixel, t_sphere *sphere)
 	if (r1 < r2)
 		return (r1);
 	return (r2);
-	//return (ret);
 }
-
-/*
-bool	intersect_ray_sphere(t_ray *ray, t_sphere *sphere)
-{
-	float 	A;
-	float 	B;
-	float 	C;
-	float	discr;
-	t_pos	dist_r_sph;
-	
-	dist_r_sph = vectorSub(&ray->position, sphere->position);
-	A = dot_product(ray->direction, ray->direction);
-	B = 2 * dot_product(ray->direction, dist_r_sph);
-	C = dot_product(dist_r_sph, dist_r_sph) - (sphere->radius * sphere->radius);
-	discr = B * B - 4 * A * C;
-	if (discr < 0)
-		return (false);
-	else
-		return (true);
-}*/
 
 int main(void)
 {
@@ -239,8 +217,8 @@ int main(void)
 
 	obs_pos = create_pos(0, 0, 0);
 	//viewport = create_canvas(380, 380, -100);
-	sphere = create_sphere(20, 0xffc0cb);
-	set_pos(sphere->position, 19, 19, 21);
+	sphere = create_sphere(30, 0xb1e7a4);
+	set_pos(sphere->position, 15, 25, 31);
 	x = 0;
 	while (x < 150)
 	{
@@ -267,63 +245,4 @@ int main(void)
 	}
 	mlx_loop(mlx_ptr);	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-int main(void)
-{
-	void		*mlx_ptr;
-	void		*win_ptr;
-	//t_pos		*obs_pos;
-	t_sphere	sphere;
-	int		x;
-	int		y;
-	bool		touch;
-	t_ray		ray;
-
-	mlx_ptr = mlx_init();
-	win_ptr = mlx_new_window(mlx_ptr, 600, 600, "Oui");
-	set_pos(&sphere.position, 200, 200, 100);
-	//sphere = *create_sphere(50, 0x87ceff);
-	sphere.radius = 50;
-	sphere.color = 0xffc0cb;
-	printf("oui\n");
-	set_pos(&ray.direction, 0, 0, 1);
-	ray.position.z = 0;
-	y = 0;
-	while (y < 600)
-	{
-		ray.position.y = y;
-		x = 0;
-		while (x < 600)
-		{
-			ray.position.x = x;
-			touch = intersect_ray_sphere(&ray, &sphere);
-			if (!touch)
-				mlx_pixel_put(mlx_ptr, win_ptr, x, y, 0x0);	
-			else
-				mlx_pixel_put(mlx_ptr, win_ptr, x, y, sphere.color);	
-			
-			x++;	
-		}
-		y++;
-		
-	}
-	mlx_loop(mlx_ptr);
-}*/
 
