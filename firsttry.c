@@ -162,13 +162,15 @@ double		ft_squrt_bin(int nb, int p)
 
 
 // returns (x,y) of intersections
-t_pos2d		*intersect(t_pos obs, t_pos pixel, t_sphere *sphere)
+float		intersect(t_pos obs, t_pos pixel, t_sphere *sphere)
 {
 	t_pos		*difference;
-	double		k[3];
-	double		discr;
+	float		k[3];
+	float		discr;
 	//t_sphere	sphere;
 	t_pos2d		*ret;
+	float		r1;
+	float		r2;
 	
 	//sphere = *(t_sphere*)(s);
 	printf("\nsphere radius is %f\n", sphere->radius);
@@ -188,8 +190,16 @@ t_pos2d		*intersect(t_pos obs, t_pos pixel, t_sphere *sphere)
 	printf("discr is %f\n", discr);
 	if (discr < 0) // no intersection
 		return (0);
-	return(create_pos2d((-k[1] + ft_squrt_bin(discr, 5)) / (2 * k[0]), (-k[1] - ft_squrt_bin(discr, 5)) / (2 * k[0])));
+	r1 = (-k[1] + ft_squrt_bin(discr, 5) / (2 * k[0]));
+	r2 = (-k[1] - ft_squrt_bin(discr, 5) / (2 * k[0]));
+
+	//return(create_pos2d((-k[1] + ft_squrt_bin(discr, 5)) / (2 * k[0]), (-k[1] - ft_squrt_bin(discr, 5)) / (2 * k[0])));
+	printf("r1 is %f\n", r1);
+	printf("r2 is %f\n", r2);
 	free(difference);
+	if (r1 < r2)
+		return (r1);
+	return (r2);
 	//return (ret);
 }
 
@@ -224,6 +234,7 @@ int main(void)
 	t_sphere	*sphere;
 	int		x;
 	int		y;
+	float		root;
 
 	mlx_ptr = mlx_init();
 	win_ptr = mlx_new_window(mlx_ptr, 400, 400, "Wouhou");
@@ -239,21 +250,19 @@ int main(void)
 		while (y < 400)
 		{
 			pix = create_pos(x, y, 0);
-			pos2d = intersect(*obs_pos, *pix, sphere);
-			printf("pos2d is %f && %f\n", pos2d->x, pos2d->y);
-			if (!pos2d)
+			root = intersect(*obs_pos, *pix, sphere);
+			printf("root is %f\n", root);
+			printf("you\n");
+			if (root)
 			{
 				printf("im in null\n");
-				mlx_pixel_put(mlx_ptr, win_ptr, x, y, 0x0);
+				mlx_pixel_put(mlx_ptr, win_ptr, x, y, sphere->color);
 			}
 			else
 			{
 				printf("im in\n");
-				mlx_pixel_put(mlx_ptr, win_ptr, x, y, sphere->color);
+				mlx_pixel_put(mlx_ptr, win_ptr, x, y, 0x0);
 			}
-			//free(pos2d);
-			printf("[][]pos2d is %f\n", pos2d->x);
-			//pos2d = NULL;	
 			printf("im out\n");
 			y++;
 		}
