@@ -120,14 +120,14 @@ t_pos		vectorSub(t_pos *v1, t_pos *v2)
 
 #include <math.h>
 
-double		ft_squrt_bin(int nb, int p)
+double		ft_squrt_bin(float nb, int p)
 {
 	int 	left;
 	int 	right;
 	float 	mid;
 	float 	res;
 
-	printf("Number nb is %d\n", nb);
+	printf("Number nb is %f\n", nb);
 	if (nb == 0)
 		return (0);
 	right = nb;
@@ -173,8 +173,7 @@ float		intersect(t_pos obs, t_pos pixel, t_sphere *sphere)
 	float		r2;
 	
 	//sphere = *(t_sphere*)(s);
-	printf("\nsphere radius is %f\n", sphere->radius);
-	printf("pixel x is %f\n", pixel.x);
+	printf("\npixel x is %f\n", pixel.x);
 	printf("pixel y is %f\n", pixel.y);
 	printf("pixel z is %f\n", pixel.z);
 	difference = create_pos(obs.x - sphere->position->x, obs.y - sphere->position->y, obs.z - sphere->position->z);
@@ -193,7 +192,6 @@ float		intersect(t_pos obs, t_pos pixel, t_sphere *sphere)
 	r1 = (-k[1] + ft_squrt_bin(discr, 5) / (2 * k[0]));
 	r2 = (-k[1] - ft_squrt_bin(discr, 5) / (2 * k[0]));
 
-	//return(create_pos2d((-k[1] + ft_squrt_bin(discr, 5)) / (2 * k[0]), (-k[1] - ft_squrt_bin(discr, 5)) / (2 * k[0])));
 	printf("r1 is %f\n", r1);
 	printf("r2 is %f\n", r2);
 	free(difference);
@@ -237,25 +235,24 @@ int main(void)
 	float		root;
 
 	mlx_ptr = mlx_init();
-	win_ptr = mlx_new_window(mlx_ptr, 400, 400, "Wouhou");
+	win_ptr = mlx_new_window(mlx_ptr, 150, 150, "WOW");
 
 	obs_pos = create_pos(0, 0, 0);
 	//viewport = create_canvas(380, 380, -100);
 	sphere = create_sphere(20, 0xffc0cb);
-	set_pos(sphere->position, -100, -100, -100);
+	set_pos(sphere->position, 19, 19, 21);
 	x = 0;
-	while (x < 400)
+	while (x < 150)
 	{
 		y = 0;
-		while (y < 400)
+		while (y < 150)
 		{
-			pix = create_pos(x, y, 0);
+			pix = create_pos(x, y, 1);
 			root = intersect(*obs_pos, *pix, sphere);
 			printf("root is %f\n", root);
-			printf("you\n");
 			if (root)
 			{
-				printf("im in null\n");
+				printf("im in root\n");
 				mlx_pixel_put(mlx_ptr, win_ptr, x, y, sphere->color);
 			}
 			else
