@@ -127,6 +127,9 @@ double		ft_squrt_bin(int nb, int p)
 	float 	mid;
 	float 	res;
 
+	printf("Number nb is %d\n", nb);
+	if (nb == 0)
+		return (0);
 	right = nb;
 	left = 0;
 	while (left <= right)
@@ -152,35 +155,39 @@ double		ft_squrt_bin(int nb, int p)
 		res -= mid;
 		mid /= 10;
 	}
-	printf("Number nb is %d\n", nb);
-	printf("real res is [%f]\n", sqrt(nb));
-	printf("res is [%f]\n", res);
+	//printf("real res is [%f]\n", sqrt(nb));
+	//printf("res is [%f]\n", res);
 	return (res);
 }
 
 
 // returns (x,y) of intersections
-t_pos2d		*intersect(t_pos origin, t_pos pixel, void *s)
+t_pos2d		*intersect(t_pos obs, t_pos pixel, t_sphere *sphere)
 {
 	t_pos		*difference;
 	double		k[3];
 	double		discr;
-	t_sphere	sphere;
+	//t_sphere	sphere;
 	t_pos2d		*ret;
 	
 	//sphere = *(t_sphere*)(s);
-	difference = create_pos(origin.x - sphere.position->x, origin.y - sphere.position->y, origin.z - sphere.position->z);
+	printf("\nsphere radius is %f\n", sphere->radius);
+	printf("pixel x is %f\n", pixel.x);
+	printf("pixel y is %f\n", pixel.y);
+	printf("pixel z is %f\n", pixel.z);
+	difference = create_pos(obs.x - sphere->position->x, obs.y - sphere->position->y, obs.z - sphere->position->z);
 	printf("difference is %f && %f\n", difference->x, difference->y);
 	k[0] = dot_product(pixel, pixel); //A
 	k[1] = 2 * dot_product(*difference, pixel); //B
-	k[2] = dot_product(*difference, *difference) - (sphere.radius * sphere.radius); //C
+	k[2] = dot_product(*difference, *difference) - (sphere->radius * sphere->radius); //C
 	
 	discr = k[1] * k[1] - 4 * k[0] * k[2]; // B * B - 4 * A * C
 	printf("A is %f\n", k[0]);
 	printf("B is %f\n", k[1]);
 	printf("C is %f\n", k[2]);
+	printf("discr is %f\n", discr);
 	if (discr < 0) // no intersection
-		return (NULL);
+		return (0);
 	return(create_pos2d((-k[1] + ft_squrt_bin(discr, 5)) / (2 * k[0]), (-k[1] - ft_squrt_bin(discr, 5)) / (2 * k[0])));
 	free(difference);
 	//return (ret);
@@ -223,23 +230,31 @@ int main(void)
 
 	obs_pos = create_pos(0, 0, 0);
 	//viewport = create_canvas(380, 380, -100);
-	sphere = create_sphere(10, 0xffc0cb);
-	set_pos(sphere->position, 300, 300, 50);
+	sphere = create_sphere(20, 0xffc0cb);
+	set_pos(sphere->position, -100, -100, -100);
 	x = 0;
 	while (x < 400)
 	{
 		y = 0;
 		while (y < 400)
 		{
-			pix = create_pos(x, y, 50);
+			pix = create_pos(x, y, 0);
 			pos2d = intersect(*obs_pos, *pix, sphere);
 			printf("pos2d is %f && %f\n", pos2d->x, pos2d->y);
 			if (!pos2d)
+			{
+				printf("im in null\n");
 				mlx_pixel_put(mlx_ptr, win_ptr, x, y, 0x0);
+			}
 			else
+			{
+				printf("im in\n");
 				mlx_pixel_put(mlx_ptr, win_ptr, x, y, sphere->color);
-			free(pos2d);
-			pos2d = NULL;	
+			}
+			//free(pos2d);
+			printf("[][]pos2d is %f\n", pos2d->x);
+			//pos2d = NULL;	
+			printf("im out\n");
 			y++;
 		}
 		x++;
