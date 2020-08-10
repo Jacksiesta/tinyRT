@@ -118,12 +118,12 @@ t_pos		vectorSub(t_pos *v1, t_pos *v2)
 	t_pos result = {v1->x - v2->x, v1->y - v2->y, v1->z - v2->z};
 	return (result);	
 }
-
-double		ft_squrt_bin(float nb, int p)
+/*
+double		ft_squrt_bin(double nb, int p)
 {
 	int 	left;
 	int 	right;
-	float 	mid;
+	double 	mid;
 	float 	res;
 
 	printf("Number nb is %f\n", nb);
@@ -153,12 +153,23 @@ double		ft_squrt_bin(float nb, int p)
 			res += mid;
 		res -= mid;
 		mid /= 10;
+		printf("mid is %f[%i]\n", mid, left);
+		printf("res is %f[%i]\n", res, left);
 	}
-	//printf("real res is [%f]\n", sqrt(nb));
-	//printf("res is [%f]\n", res);
 	return (res);
-}
+}*/
 
+float	ft_squrt_bin(float x)
+{
+	int	i;
+	float j;
+
+	j = x;
+	i = (1 << 29) + (i >> 1) - (1 << 22);
+	j = 0.5f * (j + x/j);
+	j = 0.5f * (j + x/j);
+	return (j);
+}
 
 // returns (x,y) of intersections
 float		intersect(t_pos obs, t_pos pixel, t_sphere *sphere)
@@ -186,14 +197,14 @@ float		intersect(t_pos obs, t_pos pixel, t_sphere *sphere)
 	printf("B is %f\n", k[1]);
 	printf("C is %f\n", k[2]);
 	printf("discr is %f\n", discr);
+	free(difference);
 	if (discr < 0) // no intersection
 		return (0);
-	r1 = (-k[1] + ft_squrt_bin(discr, 5) / (2 * k[0]));
-	r2 = (-k[1] - ft_squrt_bin(discr, 5) / (2 * k[0]));
+	r1 = (-k[1] + ft_squrt_bin(discr) / (2 * k[0]));
+	r2 = (-k[1] - ft_squrt_bin(discr) / (2 * k[0]));
 
 	printf("r1 is %f\n", r1);
 	printf("r2 is %f\n", r2);
-	free(difference);
 	if (r1 < r2)
 		return (r1);
 	return (r2);
@@ -213,32 +224,31 @@ int main(void)
 	float		root;
 
 	mlx_ptr = mlx_init();
-	win_ptr = mlx_new_window(mlx_ptr, 150, 150, "WOW");
+	win_ptr = mlx_new_window(mlx_ptr, 100, 100, "WOW");
 
 	obs_pos = create_pos(0, 0, 0);
 	//viewport = create_canvas(380, 380, -100);
-	sphere = create_sphere(30, 0xb1e7a4);
-	set_pos(sphere->position, 15, 25, 31);
+	sphere = create_sphere(30, 0xff0000);
+	set_pos(sphere->position, 30, 30, 31);
 	x = 0;
-	while (x < 150)
+	while (x < 100)
 	{
 		y = 0;
-		while (y < 150)
+		while (y < 100)
 		{
 			pix = create_pos(x, y, 1);
 			root = intersect(*obs_pos, *pix, sphere);
 			printf("root is %f\n", root);
 			if (root)
 			{
-				printf("im in root\n");
+				printf("IM IN ROOT YAY\n");
 				mlx_pixel_put(mlx_ptr, win_ptr, x, y, sphere->color);
 			}
 			else
 			{
-				printf("im in\n");
+				printf("im in black\n");
 				mlx_pixel_put(mlx_ptr, win_ptr, x, y, 0x0);
 			}
-			printf("im out\n");
 			y++;
 		}
 		x++;
