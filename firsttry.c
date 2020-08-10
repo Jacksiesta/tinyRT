@@ -165,6 +165,7 @@ float	ft_squrt_bin(float x)
 	float j;
 
 	j = x;
+	printf("nb is %f\n", x);
 	i = (1 << 29) + (i >> 1) - (1 << 22);
 	j = 0.5f * (j + x/j);
 	j = 0.5f * (j + x/j);
@@ -185,7 +186,7 @@ float		intersect(t_pos obs, t_pos pixel, t_sphere *sphere)
 	//sphere = *(t_sphere*)(s);
 	printf("\npixel x is %f\n", pixel.x);
 	printf("pixel y is %f\n", pixel.y);
-	printf("pixel z is %f\n", pixel.z);
+	//printf("pixel z is %f\n", pixel.z);
 	difference = create_pos(obs.x - sphere->position->x, obs.y - sphere->position->y, obs.z - sphere->position->z);
 	printf("difference is %f && %f\n", difference->x, difference->y);
 	k[0] = dot_product(pixel, pixel); //A
