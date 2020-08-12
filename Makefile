@@ -10,7 +10,7 @@ DIR_OBJS = ./
 LIBMLX = libmlx.dylib \
 		libmlx.a
 
-SRC = miniRT.c \
+SRC = miniRT.c sphere.c \
 
 SRCS = $(addprefix $(DIR_SRCS), $(SRC))
 
@@ -29,7 +29,7 @@ $(NAME) : $(OBJS)
 	$(CC) $(FLAGS) -I $(DIR_HEADERS) $(LIBMLX) $(OBJS) -o $(NAME)
 
 %.o: %.c $(INCLUDE)
-	@gcc $(FLAG) -I $(DIR_HEADERS) -c $< -o $@
+	$(CC) $(FLAGS) -c -o $@ $<
 	@echo "Compiled "$<" successfully!"
 	
 clean:
