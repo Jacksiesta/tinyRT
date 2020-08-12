@@ -25,7 +25,7 @@ typedef struct	s_ray
 
 typedef struct	s_sphere
 {
-	t_pos 	*position;
+	t_pos 	*center;
 	float 	radius;
 	int	color;
 }		t_sphere;
@@ -93,7 +93,7 @@ t_sphere	*create_sphere(int radius, int color)
 	sphere = malloc(sizeof(t_sphere));
 	sphere->radius = radius;
 	sphere->color = color;
-	sphere->position = create_pos(0, 0, 0);
+	sphere->center = create_pos(0, 0, 0);
 	return (sphere);
 }
 
@@ -187,7 +187,7 @@ float		intersect(t_pos obs, t_pos pixel, t_sphere *sphere)
 	printf("\npixel x is %f\n", pixel.x);
 	printf("pixel y is %f\n", pixel.y);
 	//printf("pixel z is %f\n", pixel.z);
-	difference = create_pos(obs.x - sphere->position->x, obs.y - sphere->position->y, obs.z - sphere->position->z);
+	difference = create_pos(obs.x - sphere->center->x, obs.y - sphere->center->y, obs.z - sphere->center->z);
 	printf("difference is %f && %f\n", difference->x, difference->y);
 	k[0] = dot_product(pixel, pixel); //A
 	k[1] = 2 * dot_product(*difference, pixel); //B
@@ -226,18 +226,18 @@ int main(void)
 
 	mlx_ptr = mlx_init();
 	win_ptr = mlx_new_window(mlx_ptr, 100, 100, "WOW");
+	viewport = create_canvas(100, 100, 1);
 
 	obs_pos = create_pos(0, 0, 0);
-	//viewport = create_canvas(380, 380, -100);
 	sphere = create_sphere(30, 0xff0000);
-	set_pos(sphere->position, 30, 30, 31);
+	set_pos(sphere->center, 30, 30, 31);
 	x = 0;
 	while (x < 100)
 	{
 		y = 0;
 		while (y < 100)
 		{
-			pix = create_pos(x, y, 1);
+			pix = create_pos(x, y, viewport->distance);
 			root = intersect(*obs_pos, *pix, sphere);
 			printf("root is %f\n", root);
 			if (root)

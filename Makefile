@@ -1,27 +1,44 @@
 CC = gcc
 FLAGS = -Wall -Werror -Wextra
 
-NAME = miniRT.a
+DIR_HEADERS = ./includes/
+
+DIR_SRCS = ./srcs/
+
+DIR_OBJS = ./
 
 LIBMLX = libmlx.dylib \
 		libmlx.a
 
-$(NAME) = miniRT
+SRC = sphere.c \
 
-$(LIBMLX) = libmlx
+SRCS = $(addprefix $(DIR_SRCS), $(SRC))
 
-$(DYLIB) = $(LIBMLX).dylib
+OBJS = $(SRC:.c=.o)
+	INCLUDE = mlx.h
 
-all:
+NAME = miniRT
+
+all : $(NAME)
+
+$(NAME) : $(OBJS)
 	make -C ./minilibx_mms_20200219/
 	make -C ./minilibx_opengl_20191021/
+	cp ./minilibx_mms/libmlx.dylib libmlx.dylib
+	cp ./minilibx_opengl/libmlx.a libmlx.a
+	$(CC) $(FLAGS) -I $(DIR_HEADERS) $(LIBMLX) $(OBJS) -o $(NAME)
 
-bonus:
-
+%.o: %.c $(INCLUDE)
+	$(CC) $(FLAGS) -o $@ $<
+	@echo "Compiled "$<" successfully!"
+	
 clean:
+	make -C $(LIBMLX) clean
+	rm -f $(OBJ)
 
-fclean:
+fclean: clean
+	rm -rf $(NAME)
+	rm -rf $(LIBMLX)/miniRT.a
 
-re:
+re: fclean all
 
-.PHONY: all, clean, fclean, re, bonus
