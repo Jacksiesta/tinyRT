@@ -10,11 +10,11 @@ DIR_OBJS = ./
 LIBMLX = libmlx.dylib \
 		libmlx.a
 
-SRC = sphere.c \
+SRC = miniRT.c \
 
 SRCS = $(addprefix $(DIR_SRCS), $(SRC))
 
-OBJS = $(SRC:.c=.o)
+OBJS = $(SRCS:.c=.o)
 	INCLUDE = mlx.h
 
 NAME = miniRT
@@ -24,12 +24,12 @@ all : $(NAME)
 $(NAME) : $(OBJS)
 	make -C ./minilibx_mms_20200219/
 	make -C ./minilibx_opengl_20191021/
-	cp ./minilibx_mms/libmlx.dylib libmlx.dylib
-	cp ./minilibx_opengl/libmlx.a libmlx.a
+	cp ./minilibx_mms_20200219/libmlx.dylib libmlx.dylib
+	cp ./minilibx_opengl_20191021/libmlx.a libmlx.a
 	$(CC) $(FLAGS) -I $(DIR_HEADERS) $(LIBMLX) $(OBJS) -o $(NAME)
 
 %.o: %.c $(INCLUDE)
-	$(CC) $(FLAGS) -o $@ $<
+	@gcc $(FLAG) -I $(DIR_HEADERS) -c $< -o $@
 	@echo "Compiled "$<" successfully!"
 	
 clean:
