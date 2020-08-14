@@ -174,7 +174,7 @@ float	ft_squrt_bin(float x)
 	return (j);
 }
 
-// returns (x,y) of intersections
+// returns root of intersection (smallest value if 2)
 float		intersect(t_pos obs, t_pos pixel, t_sphere *sphere)
 {
 	t_pos		*difference;
@@ -190,7 +190,7 @@ float		intersect(t_pos obs, t_pos pixel, t_sphere *sphere)
 	printf("pixel y is %f\n", pixel.y);
 	//printf("pixel z is %f\n", pixel.z);
 	difference = create_pos(obs.x - sphere->center->x, obs.y - sphere->center->y, obs.z - sphere->center->z);
-	printf("difference is %f && %f\n", difference->x, difference->y);
+	//printf("difference is %f && %f\n", difference->x, difference->y);
 	k[0] = dot_product(pixel, pixel); //A
 	k[1] = 2 * dot_product(*difference, pixel); //B
 	k[2] = dot_product(*difference, *difference) - (sphere->radius * sphere->radius); //C
@@ -228,18 +228,18 @@ int main(void)
 
 	mlx_ptr = mlx_init();
 	win_ptr = mlx_new_window(mlx_ptr, 100, 100, "WOW");
-	viewport = create_canvas(100, 100, 1);
+	//viewport = create_canvas(100, 100, 1);
 
 	obs_pos = create_pos(0, 0, 0);
 	sphere = create_sphere(30, 0xff0000);
-	set_pos(sphere->center, 30, 30, 31);
+	set_pos(sphere->center, 50, 50, 31);
 	x = 0;
 	while (x < 100)
 	{
 		y = 0;
 		while (y < 100)
 		{
-			pix = create_pos(x, y, viewport->distance);
+			pix = create_pos(x, y, 1);
 			root = intersect(*obs_pos, *pix, sphere);
 			printf("root is %f\n", root);
 			if (root)
