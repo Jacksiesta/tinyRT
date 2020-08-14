@@ -1,4 +1,4 @@
-#include "minilibx_opengl_20191021/mlx.h"
+#include "../includes/miniRT.h"
 //#include "miniRT.h"
 #include <stdlib.h>
 #include <stdbool.h>
