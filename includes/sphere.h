@@ -3,6 +3,13 @@
 
 #include <stdlib.h>
 
+typedef struct 	s_pos
+{
+	double x;
+	double y;
+	double z;
+}		t_pos;
+
 typedef struct	s_sphere
 {
 	t_pos 	*center;

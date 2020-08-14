@@ -5,12 +5,13 @@
 #include <stdio.h>
 #include <math.h>
 
+/*
 typedef struct 	s_pos
 {
 	double x;
 	double y;
 	double z;
-}		t_pos;
+}		t_pos;*/
 
 typedef struct	s_pos2d
 {
@@ -24,6 +25,7 @@ typedef struct	s_ray
 	t_pos direction;	
 }		t_ray;
 
+/*
 typedef struct	s_sphere
 {
 	t_pos 	*center;
@@ -36,7 +38,7 @@ typedef struct	s_canvas
 	double	width;
 	double	height;
 	double	distance;	
-}		t_canvas;
+}		t_canvas;*/
 
 typedef struct s_lstobject
 {

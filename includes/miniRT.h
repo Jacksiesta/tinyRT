@@ -10,17 +10,16 @@
 #include "mlx.h"
 #include "sphere.h"
 
-/*
-typedef struct	s_sphere
+typedef struct	s_canvas
 {
-	t_pos 	*center;
-	float 	radius;
-	int	color;
-}		t_sphere;*/
+	double	width;
+	double	height;
+	double	distance;	
+}		t_canvas;
 
-t_lstobject	*create_obj(int t, void *o);
+//t_lstobject	*create_obj(int t, void *o);
 t_pos		*create_pos(double x, double y, double z);
-t_pos2d		*create_pos2d(int x, int y);
+//t_pos2d		*create_pos2d(int x, int y);
 void		set_pos(t_pos *position, double x, double y, double z);
 //t_sphere	*create_sphere(int radius, int color);
 t_canvas	*create_canvas(int w, int h, int d);
