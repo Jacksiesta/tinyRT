@@ -59,6 +59,7 @@ t_lstobject	*create_obj(int t, void *o)
 }
 
 // insert (x,y,z) values in t_pos variable + ret pos
+/*
 t_pos		*create_pos(double x, double y, double z)
 {
 	t_pos	*position;
@@ -68,7 +69,7 @@ t_pos		*create_pos(double x, double y, double z)
 	position->y = y;
 	position->z = z;
 	return (position);	
-}
+}*/
 
 // insert (x,y) values in t_pos2d variable + ret pos
 t_pos2d		*create_pos2d(int x, int y)
@@ -89,6 +90,7 @@ void		set_pos(t_pos *position, double x, double y, double z)
 	position->z = z;
 }
 
+/*
 t_sphere	*create_sphere(int radius, int color)
 {
 	t_sphere	*sphere;
@@ -98,8 +100,8 @@ t_sphere	*create_sphere(int radius, int color)
 	sphere->color = color;
 	sphere->center = create_pos(0, 0, 0);
 	return (sphere);
-}
-
+}*/
+/*
 t_canvas	*create_canvas(int w, int h, int d)
 {
 	t_canvas	*canvas;
@@ -109,8 +111,9 @@ t_canvas	*create_canvas(int w, int h, int d)
 	canvas->height = h;
 	canvas->distance = d;
 	return (canvas);	
-}
+}*/
 
+/*
 int		dot_product(t_pos pos1, t_pos pos2)
 {
 	return (pos1.x * pos2.x + pos1.y * pos2.y + pos1.z * pos2.z);
@@ -120,7 +123,8 @@ t_pos		vectorSub(t_pos *v1, t_pos *v2)
 {
 	t_pos result = {v1->x - v2->x, v1->y - v2->y, v1->z - v2->z};
 	return (result);	
-}
+}*/
+
 /*
 double		ft_squrt_bin(double nb, int p)
 {
@@ -181,7 +185,6 @@ float		intersect(t_pos obs, t_pos pixel, t_sphere *sphere)
 	float		k[3];
 	float		discr;
 	//t_sphere	sphere;
-	t_pos2d		*ret;
 	float		r1;
 	float		r2;
 	
@@ -191,14 +194,14 @@ float		intersect(t_pos obs, t_pos pixel, t_sphere *sphere)
 	//printf("pixel z is %f\n", pixel.z);
 	difference = create_pos(obs.x - sphere->center->x, obs.y - sphere->center->y, obs.z - sphere->center->z);
 	//printf("difference is %f && %f\n", difference->x, difference->y);
-	k[0] = dot_product(pixel, pixel); //A
-	k[1] = 2 * dot_product(*difference, pixel); //B
-	k[2] = dot_product(*difference, *difference) - (sphere->radius * sphere->radius); //C
+	k[0] = dot_vector(pixel, pixel); //A
+	k[1] = 2 * dot_vector(*difference, pixel); //B
+	k[2] = dot_vector(*difference, *difference) - (sphere->radius * sphere->radius); //C
 	
 	discr = k[1] * k[1] - 4 * k[0] * k[2]; // B * B - 4 * A * C
-	printf("A is %f\n", k[0]);
-	printf("B is %f\n", k[1]);
-	printf("C is %f\n", k[2]);
+	//printf("A is %f\n", k[0]);
+	//printf("B is %f\n", k[1]);
+	//printf("C is %f\n", k[2]);
 	printf("discr is %f\n", discr);
 	free(difference);
 	if (discr < 0) // no intersection
@@ -231,7 +234,7 @@ int main(void)
 	//viewport = create_canvas(100, 100, 1);
 
 	obs_pos = create_pos(0, 0, 0);
-	sphere = create_sphere(30, 0xff0000);
+	sphere = new_sphere(30, 0xff0000, 50);
 	set_pos(sphere->center, 50, 50, 31);
 	x = 0;
 	while (x < 100)
