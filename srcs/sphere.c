@@ -27,14 +27,3 @@ t_sphere	*new_default_sphere(float radius, int color)
 	return (new_sphere(radius, color, new_vector(0, 0, 0)));	
 }
 
-/*
-t_sphere	*create_sphere(int radius, int color)
-{
-	t_sphere	*sphere;
-	
-	sphere = malloc(sizeof(t_sphere));
-	sphere->radius = radius;
-	sphere->color = color;
-	sphere->center = create_pos(0, 0, 0);
-	return (sphere);
-}*/
