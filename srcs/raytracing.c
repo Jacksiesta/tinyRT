@@ -10,7 +10,7 @@ float	compute_lighting(t_vector *point, t_vector *normal, t_lstobjects *lights)
 
 	length_n = length_vector(*normal);
 	intensity = 0;
-	while (lights)
+	while (lights) //check all light sources
 	{
 		light = ((t_light *)lights->object);
 		if (light->type == TYPE_AMBIENT)
@@ -22,8 +22,8 @@ float	compute_lighting(t_vector *point, t_vector *normal, t_lstobjects *lights)
 			else if (light->type == TYPE_DIRECTIONAL)
 				vec_l = light->vector;
 			n_dot_l = dot_vector(*normal, *vec_l);
-			if (n_dot_l > 0)
-				intensity += light->intensity * n_dot_l / lenght->vector(*vec_l);	
+			if (n_dot_l > 0) // ray outside 
+				intensity += light->intensity * n_dot_l / len_vector(*vec_l);	
 		}
 		lights = lights->next;
 	}
@@ -70,10 +70,11 @@ int	trace_ray(t_vector origin, t_vector direction, t_lstobjects *objects, float 
 	closest_object = NULL;
 	closest_t = -1;
 	type = -1;
-	while (objects)
+	while (objects) // check all objects present to find closest_object
 	{
 		if (objects->type == TYPE_SPHERE)
 			t_temp = intersect_sphere(origin, direction, objects->object);
+		// t_min < t_temp < t_max
 		if (t_temp > t_min_max[0] && (t_temp <  t_min_max[1] || t_min_max[1] == -1) && (t_temp < closest_t || closest_t == -1))
 		{
 			type = objects->type;
@@ -84,9 +85,9 @@ int	trace_ray(t_vector origin, t_vector direction, t_lstobjects *objects, float 
 	}
 	if (!closest_object)
 		return (BACKGROUND_COLOR);
-	point = add_vector(origin, *(scale_vector(closest_t, direction)));
-	normal = sub_vector(*point, *(((t_sphere *)closest_object)->center));
-	normal = scale_vector(1 / lenght_vector(*normal), *normal);
+	point = add_vector(origin, *(scale_vector(closest_t, direction))); //hit point on object
+	normal = sub_vector(*point, *(((t_sphere *)closest_object)->center)); // get to center with direction of point
+	normal = scale_vector(1 / lenght_vector(*normal), *normal); // scale from center
 	if (type == TYPE_SPHERE)
 	{
 		color = color_to_rgb((t_sphere *)closest_object->color);
@@ -111,7 +112,7 @@ int	trace_ray(t_vector origin, t_vector direction, t_lstobjects *objects, float 
 		else
 			b = new_color->z;
 		set_vector(new_color, r, g, b);
-		ret_color - rgb_to_color(new_color);
+		ret_color = rgb_to_color(new_color);
 		free(new_color);
 		return (ret_color);	
 	}
