@@ -15,8 +15,6 @@ INCLUDES = includes/miniRT.h\
 SRC_PATH = srcs
 SRC_NAME = miniRT.c \
 		sphere.c \
-		vector.c \
-		vector_math.c \
 		canvas.c \
 		light.c \
 		raytracing.c \
