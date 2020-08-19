@@ -1,4 +1,4 @@
-#include "../includes/lgiht.h"
+#include "../includes/light.h"
 
 t_light		*new_default_light(int type, float intensity)
 {

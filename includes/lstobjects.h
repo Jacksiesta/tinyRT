@@ -7,13 +7,13 @@
 # define TYPE_PLAN 1
 # define TYPE_LIGHT 2
 
-typedef struct s_lstobjects
+typedef struct s_lstobject
 {
 	int	type;
 	void	*object;
 	void	*next;	
-}		t_lstobjects;
+}		t_lstobject;
 
-t_lstobjects	*new_obj(int type, void *object);
+t_lstobject	*new_obj(int type, void *object);
 
 #endif

@@ -3,13 +3,13 @@
 
 #include <stdlib.h>
 #include "vector.h"
-
+/*
 typedef struct 	s_pos
 {
 	double x;
 	double y;
 	double z;
-}		t_pos;
+}		t_pos;*/
 
 typedef struct	s_sphere
 {

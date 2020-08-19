@@ -1,6 +1,6 @@
 #include "../includes/miniRT.h"
 
-float	compute_lighting(t_vector *point, t_vector *normal, t_lstobjects *lights)
+float	compute_lighting(t_vector *point, t_vector *normal, t_lstobject *lights)
 {
 	float		intensity;
 	t_light		*light;
@@ -8,7 +8,7 @@ float	compute_lighting(t_vector *point, t_vector *normal, t_lstobjects *lights)
 	float		n_dot_l;
 	float		length_n;
 
-	length_n = length_vector(*normal);
+	length_n = len_vector(*normal);
 	intensity = 0;
 	while (lights) //check all light sources
 	{
@@ -18,7 +18,7 @@ float	compute_lighting(t_vector *point, t_vector *normal, t_lstobjects *lights)
 		else
 		{
 			if (light->type == TYPE_POINT)
-				vec_l = sub_vector(*light->vector, *point);
+				vec_l = ft_sub_vector(*light->vector, *point);
 			else if (light->type == TYPE_DIRECTIONAL)
 				vec_l = light->vector;
 			n_dot_l = dot_vector(*normal, *vec_l);
@@ -52,7 +52,8 @@ float	intersect_sphere(t_vector obs, t_vector direction, t_sphere *object)
 	return (r[1]);
 }
 
-int	trace_ray(t_vector origin, t_vector direction, t_lstobjects *objects, float t_min_max[2], t_lstobject *lights)
+// returns correct color at given ray 
+int	trace_ray(t_vector origin, t_vector direction, t_lstobject *objects, float t_min_max[2], t_lstobject *lights)
 {
 	int		ret_color;
 	int		type;
@@ -79,18 +80,19 @@ int	trace_ray(t_vector origin, t_vector direction, t_lstobjects *objects, float 
 		{
 			type = objects->type;
 			closest_t = t_temp;
-			closest_objet = objects->object;
+			closest_object = objects->object;
 		}
 		objects = objects->next;
 	}
 	if (!closest_object)
 		return (BACKGROUND_COLOR);
 	point = add_vector(origin, *(scale_vector(closest_t, direction))); //hit point on object
-	normal = sub_vector(*point, *(((t_sphere *)closest_object)->center)); // get to center with direction of point
-	normal = scale_vector(1 / lenght_vector(*normal), *normal); // scale from center
+	normal = ft_sub_vector(*point, *(((t_sphere *)closest_object)->center)); // get to center with direction of point
+	normal = scale_vector(1 / len_vector(*normal), *normal); // scale from center
 	if (type == TYPE_SPHERE)
 	{
-		color = color_to_rgb((t_sphere *)closest_object->color);
+		// exctitude of color rgb
+		color = color_to_rgb(((t_sphere *)closest_object)->color);
 		new_color = scale_vector(compute_lighting(point, normal, lights), *color);
 		free(color);
 		if (new_color->x > 255)

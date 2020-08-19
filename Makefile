@@ -7,7 +7,10 @@ INCLUDES = includes/miniRT.h\
 		includes/sphere.h\
 		includes/vector.h\
 		includes/canvas.h\
-		includes/light.h
+		includes/light.h\
+		includes/lstobjects.h\
+		includes/raytracing.h\
+		includes/get_next_line.h
 
 SRC_PATH = srcs
 SRC_NAME = miniRT.c \
@@ -15,7 +18,13 @@ SRC_NAME = miniRT.c \
 		vector.c \
 		vector_math.c \
 		canvas.c \
-		light.c
+		light.c \
+		raytracing.c \
+		vector_math.c \
+		vector_color.c \
+		vector.c \
+		lstobjects.c \
+		utils/get_next_line.c
 
 SRC = $(addprefix $(SRC_PATH)/,$(SRC_NAME))
 OBJS = $(SRC:.c=.o)

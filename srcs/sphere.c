@@ -1,16 +1,5 @@
 #include "../includes/sphere.h"
 
-t_pos		*create_pos(double x, double y, double z)
-{
-	t_pos	*position;
-	
-	position = malloc(sizeof(t_pos));
-	position->x = x;
-	position->y = y;
-	position->z = z;
-	return (position);	
-}
-
 t_sphere	*new_sphere(float radius, int color, t_vector *center)
 {
 	t_sphere	*sphere;
