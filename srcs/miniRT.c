@@ -51,7 +51,6 @@ float	ft_squrt_bin(float x)
 	float j;
 
 	j = x;
-	printf("nb is %f\n", x);
 	i = (1 << 29) + (i >> 1) - (1 << 22);
 	j = 0.5f * (j + x/j);
 	j = 0.5f * (j + x/j);
@@ -77,19 +76,19 @@ int		main(void)
 	viewport = new_canvas(500, 500, 1);
 	win_ptr = mlx_new_window(mlx_ptr, viewport->width, viewport->height, "miniRT");
 	/** SPHERES & O **/
-	obs = new_vector(0, 0, 0);
-	lstobj = new_obj(TYPE_SPHERE, new_default_sphere(1, 0xbf3eff));
-	set_vector(((t_sphere *)lstobj->object)->center, 0, -1, 3);
-	lstobj->next = new_obj(TYPE_SPHERE, new_default_sphere(1, 0x6400));
-	set_vector(((t_sphere *)((t_lstobject *)lstobj->next)->object)->center, 2, 0, 4);
-	((t_lstobject *)lstobj->next)->next = new_obj(TYPE_SPHERE, new_default_sphere(1, 0x7b68ee));
-	set_vector(((t_sphere *)((t_lstobject *)((t_lstobject *)lstobj->next)->next)->object)->center, -2, 0, 4);
+	obs = new_vector(0, 0, -5);
+	lstobj = new_obj(TYPE_SPHERE, new_default_sphere(1, 0xff0074));
+	set_vector(((t_sphere *)lstobj->object)->center, 0, -1, 5);
+	lstobj->next = new_obj(TYPE_SPHERE, new_default_sphere(1, 0x00cccc));
+	set_vector(((t_sphere *)((t_lstobject *)lstobj->next)->object)->center, 2, -2, 8);
+	((t_lstobject *)lstobj->next)->next = new_obj(TYPE_SPHERE, new_default_sphere(1, 0xf1c40f));
+	set_vector(((t_sphere *)((t_lstobject *)((t_lstobject *)lstobj->next)->next)->object)->center, -2, 2, 4);
 	/** LIGHTS **/
-	lstlight = new_obj(TYPE_LIGHT, new_default_light(TYPE_AMBIENT, 0.2));
-	lstlight->next = (t_lstobject *)new_obj(TYPE_LIGHT, new_default_light(TYPE_POINT, 0.6));
-	set_vector(((t_light *)((t_lstobject *)lstlight->next)->object)->vector, 2, 1, 0);
-	((t_lstobject *)lstlight->next)->next = new_obj(TYPE_LIGHT, new_default_light(TYPE_DIRECTIONAL, 0.2));
-	set_vector(((t_light *)((t_lstobject *)((t_lstobject *)lstlight->next)->next)->object)->vector, 1, 4, 4);
+	lstlight = new_obj(TYPE_LIGHT, new_default_light(TYPE_AMBIENT, 0.1));
+	lstlight->next = (t_lstobject *)new_obj(TYPE_LIGHT, new_default_light(TYPE_POINT, 0.5));
+	set_vector(((t_light *)((t_lstobject *)lstlight->next)->object)->vector, -3, 1, 0);
+	((t_lstobject *)lstlight->next)->next = new_obj(TYPE_LIGHT, new_default_light(TYPE_DIRECTIONAL, 0.8));
+	set_vector(((t_light *)((t_lstobject *)((t_lstobject *)lstlight->next)->next)->object)->vector, 1, -2, -1);
 	/** RENDERING **/
 	x = -(viewport->width/2) + 1;
 	while ((x + (viewport->width/2) <= viewport->width))
