@@ -18,7 +18,7 @@ float	compute_lighting(t_vector *point, t_vector *normal, t_lstobject *lights)
 		else
 		{
 			if (light->type == TYPE_POINT)
-				vec_l = ft_sub_vector(*light->vector, *point);
+				vec_l = sub_vector(*light->vector, *point);
 			else if (light->type == TYPE_DIRECTIONAL)
 				vec_l = light->vector;
 			n_dot_l = dot_vector(*normal, *vec_l);
@@ -52,25 +52,41 @@ float	intersect_sphere(t_vector obs, t_vector direction, t_sphere *object)
 	return (r[1]);
 }
 
-// returns correct color at given ray 
-int	trace_ray(t_vector origin, t_vector direction, t_lstobject *objects, float t_min_max[2], t_lstobject *lights)
+int	calculate_new_color(int type, t_lstobject *object, t_lstobject *lights, t_vector *point)
 {
 	int		ret_color;
-	int		type;
-	int		r;
-	int		g;
-	int		b;
-	float		t_temp;
-	float		closest_t;
-	void		*closest_object;
-	t_vector	*point;
 	t_vector	*normal;
 	t_vector	*color;
 	t_vector	*new_color;
+
+	normal = sub_vector(*point, *(((t_sphere *)object)->center)); //get to center with dir of point
+	normal = scale_vector(1 / len_vector(*normal), *normal); //scale from center
+	if (type == TYPE_SPHERE)
+	{
+		color = color_to_rgb(((t_sphere *)object)->color);
+		new_color = scale_vector(compute_lighting(point, normal, lights), *color);
+		free(color);
+		rearrange_rgb(new_color);
+		ret_color = rgb_to_color(new_color);
+		free(new_color);
+		return (ret_color);
+	}
+	return (BACKGROUND_COLOR);
+}
+
+// returns correct color at given ray 
+int	trace_ray(t_vector origin, t_vector direction, t_lstobject *objects, t_lstobject *lights)
+{
+	float		t_temp;
+	float		closest_t;
+	t_lstobject	*closest_object;
+	t_vector	*point;
+	float		t_min_max[2];
 	
+	t_min_max[0] = 1;
+	t_min_max[1] = -1;
 	closest_object = NULL;
 	closest_t = -1;
-	type = -1;
 	while (objects) // check all objects present to find closest_object
 	{
 		if (objects->type == TYPE_SPHERE)
@@ -78,45 +94,13 @@ int	trace_ray(t_vector origin, t_vector direction, t_lstobject *objects, float t
 		// t_min < t_temp < t_max
 		if (t_temp > t_min_max[0] && (t_temp <  t_min_max[1] || t_min_max[1] == -1) && (t_temp < closest_t || closest_t == -1))
 		{
-			type = objects->type;
 			closest_t = t_temp;
-			closest_object = objects->object;
+			closest_object = objects;
 		}
 		objects = objects->next;
 	}
 	if (!closest_object)
 		return (BACKGROUND_COLOR);
 	point = add_vector(origin, *(scale_vector(closest_t, direction))); //hit point on object
-	normal = ft_sub_vector(*point, *(((t_sphere *)closest_object)->center)); // get to center with direction of point
-	normal = scale_vector(1 / len_vector(*normal), *normal); // scale from center
-	if (type == TYPE_SPHERE)
-	{
-		// exctitude of color rgb
-		color = color_to_rgb(((t_sphere *)closest_object)->color);
-		new_color = scale_vector(compute_lighting(point, normal, lights), *color);
-		free(color);
-		if (new_color->x > 255)
-			r = 255;
-		else if (new_color->x < 0)
-			r = 0;
-		else
-			r = new_color->x;
-		if (new_color->y > 255)
-			g = 255;
-		else if (new_color->y < 0)
-			g = 0;
-		else
-			g = new_color->y;
-		if (new_color->z > 255)
-			b = 255;
-		else if (new_color->z < 0)
-			b = 0;
-		else
-			b = new_color->z;
-		set_vector(new_color, r, g, b);
-		ret_color = rgb_to_color(new_color);
-		free(new_color);
-		return (ret_color);	
-	}
-	return (BACKGROUND_COLOR);	
+	return (calculate_new_color(closest_object->type, closest_object->object, lights, point));
 }

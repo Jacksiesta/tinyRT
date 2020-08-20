@@ -21,3 +21,13 @@ int		rgb_to_color(t_vector *rgb)
 	color = (int)((color << 8) + (int)rgb->z);
 	return (color);	
 }
+
+void		rearrange_rgb(t_vector *color)
+{
+	color->x = (color->x > 255) ? 255 : color->x;
+	color->x = (color->x < 0) ? 0 : color->x;
+	color->y = (color->y > 255) ? 255 : color->y;
+	color->y = (color->y < 0) ? 0 : color->y;
+	color->z = (color->z > 255) ? 255 : color->z;
+	color->z = (color->z < 0) ? 0 : color->z;	
+}
