@@ -8,6 +8,7 @@ INCLUDES = includes/miniRT.h\
 		includes/vector.h\
 		includes/canvas.h\
 		includes/light.h\
+		includes/scene.h\
 		includes/lstobjects.h\
 		includes/raytracing.h\
 		includes/get_next_line.h
@@ -21,6 +22,7 @@ SRC_NAME = miniRT.c \
 		vector_math.c \
 		vector_color.c \
 		vector.c \
+		scene.c \
 		lstobjects.c \
 		utils/get_next_line.c
 
