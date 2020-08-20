@@ -11,6 +11,7 @@ typedef struct 	s_scene
 	float		t_max;		
 }			t_scene;
 
+t_scene		*new_scene(t_vector *origin, t_lstobject *objects, t_lstobject *lights, int color);
 
 
 #endif
