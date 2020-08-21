@@ -10,3 +10,8 @@ t_rotation	*new_rotation(t_vector *rota_x, t_vector *rota_y, t_vector *rota_z)
 	rotation->z = rota_z;
 	return (rotation);	
 }
+
+void		rot(t_vector *v, t_vector *angle)
+{
+		
+}
