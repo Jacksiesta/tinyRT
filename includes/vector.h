@@ -10,6 +10,13 @@ typedef struct	s_vector
 	float z;	
 }		t_vector;
 
+typedef struct	s_rotation
+{
+	t_vector	*x;
+	t_vector	*y;
+	t_vector	*z;	
+}		t_rotation;
+
 /* VECTOR_MATH */
 
 float		dot_vector(t_vector v1, t_vector v2);
@@ -28,5 +35,8 @@ t_vector	*new_vector(float x, float y, float z);
 t_vector	*color_to_rgb(unsigned int color);
 int		rgb_to_color(t_vector *rgb);
 void		rearrange_rgb(t_vector *vector);
+
+/* ROTATION */
+t_rotation	*new_rotation(t_vector *rota_x, t_vector *rota_y, t_vector *rota_z);
 
 #endif

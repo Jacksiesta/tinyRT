@@ -19,6 +19,7 @@
 #include "raytracing.h"
 #include "light.h"
 #include "scene.h"
+#include "interesect.h"
 #include "get_next_line.h"
 
 float		ft_squrt_bin(float x);

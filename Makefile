@@ -11,6 +11,8 @@ INCLUDES = includes/miniRT.h\
 		includes/scene.h\
 		includes/lstobjects.h\
 		includes/raytracing.h\
+		includes/intersect.h\
+		includes/plan.h\
 		includes/get_next_line.h
 
 SRC_PATH = srcs
@@ -24,6 +26,8 @@ SRC_NAME = miniRT.c \
 		vector.c \
 		scene.c \
 		lstobjects.c \
+		intersect.c \
+		plan.c \
 		utils/get_next_line.c
 
 SRC = $(addprefix $(SRC_PATH)/,$(SRC_NAME))
