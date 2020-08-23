@@ -1,14 +1,19 @@
 #include "../includes/miniRT.h"
 
-float	compute_lighting(t_vector *point, t_vector *normal, t_lstobject *lights)
+float	compute_lighting(t_light_vector *l_vector, t_lstobject *lights)
 {
 	float		intensity;
 	t_light		*light;
 	t_vector	*vec_l;
+	t_vector	*vec_r;
 	float		n_dot_l;
+	float		n_dot_v;
 	float		length_n;
+	float		length_v;
+	t_vector	*temp;
 
-	length_n = len_vector(*normal);
+	length_v = len_vector(*l_vector->view);
+	length_n = len_vector(*l_vector->normal);
 	intensity = 0;
 	while (lights) //check all light sources
 	{
@@ -18,12 +23,26 @@ float	compute_lighting(t_vector *point, t_vector *normal, t_lstobject *lights)
 		else
 		{
 			if (light->type == TYPE_POINT)
-				vec_l = sub_vector(*light->vector, *point);
+				vec_l = sub_vector(*light->vector, *l_vector->point);
 			else if (light->type == TYPE_DIRECTIONAL)
 				vec_l = light->vector;
-			n_dot_l = dot_vector(*normal, *vec_l);
+			n_dot_l = dot_vector(*l_vector->normal, *vec_l);
 			if (n_dot_l > 0) // ray outside 
-				intensity += light->intensity * n_dot_l / len_vector(*vec_l);	
+				intensity += light->intensity * n_dot_l / len_vector(*vec_l);
+			/* REFLECTION MATH */
+			if (l_vector->reflection != -1)
+			{
+				temp = scale_vector(2 * dot_vector(*l_vector->normal, *vec_l), *l_vector->normal);
+				vec_r = sub_vector(*temp, *vec_l);
+				r_dot_v = dot_vector(*vec_r, *l_vector->view);
+				if (r_dot_v > 0)
+				{
+					intensity += light->intensity * pow(r_dot_v / (len_vector(*vec_r) * length_v), l_vector->reflection);
+				}
+				free(vec_r);
+			}	
+			if (light->type == TYPE_POINT)
+				free(vec_l);
 		}
 		lights = lights->next;
 	}
@@ -52,47 +71,54 @@ float	intersect_sphere(t_vector obs, t_vector direction, t_sphere *object)
 	return (r[1]);
 }
 
-int	calculate_new_color(int type, t_lstobject *object, t_lstobject *lights, t_vector *point)
+int	calculate_new_color(t_lstobject *object, t_lstobject *lights, t_light_vector *l_vector)
 {
 	int		ret_color;
 	t_vector	*normal;
+	void		*object;
 	t_vector	*color;
 	t_vector	*new_color;
 
-	normal = sub_vector(*point, *(((t_sphere *)object)->center)); //get to center with dir of point
-	normal = scale_vector(1 / len_vector(*normal), *normal); //scale from center
-	if (type == TYPE_SPHERE)
+	object = object->object;
+	normal = sub_vector(*l_vector->point, *(((t_sphere *)object)->center)); // get to center with dir of point
+	l_vector->normal = scale_vector(1 / len_vector(*normal), *normal); // scale from center
+	free(normal);
+	if (object->type == TYPE_SPHERE)
 	{
+		l_vector->reflection = ((t_sphere *)object)->reflection;
 		color = color_to_rgb(((t_sphere *)object)->color);
-		new_color = scale_vector(compute_lighting(point, normal, lights), *color);
+		new_color = scale_vector(compute_lighting(l_vector, lights), *color);
+		free(l_vector->normal);
 		free(color);
 		rearrange_rgb(new_color);
 		ret_color = rgb_to_color(new_color);
 		free(new_color);
 		return (ret_color);
 	}
+	free(l_vector->normal);
 	return (BACKGROUND_COLOR);
 }
 
 // returns correct color at given ray 
-int	trace_ray(t_vector origin, t_vector direction, t_lstobject *objects, t_lstobject *lights)
+int	trace_ray(t_vector direction, t_scene *scene)
 {
 	float		t_temp;
 	float		closest_t;
 	t_lstobject	*closest_object;
-	t_vector	*point;
-	float		t_min_max[2];
+	t_light_vector	*l_vector;
+	t_lstobject	*objects;
+	t_vector	*temp;
+	int		final_color;
 	
-	t_min_max[0] = 1;
-	t_min_max[1] = -1;
 	closest_object = NULL;
 	closest_t = -1;
+	objects = scene->objects;
 	while (objects) // check all objects present to find closest_object
 	{
 		if (objects->type == TYPE_SPHERE)
-			t_temp = intersect_sphere(origin, direction, objects->object);
+			t_temp = intersect_sphere(*scene->origin, direction, objects->object);
 		// t_min < t_temp < t_max
-		if (t_temp > t_min_max[0] && (t_temp <  t_min_max[1] || t_min_max[1] == -1) && (t_temp < closest_t || closest_t == -1))
+		if (t_temp > scene->t_min && (t_temp <  scene->t_max || scene->t_max == -1) && (t_temp < closest_t || closest_t == -1))
 		{
 			closest_t = t_temp;
 			closest_object = objects;
@@ -100,7 +126,15 @@ int	trace_ray(t_vector origin, t_vector direction, t_lstobject *objects, t_lstob
 		objects = objects->next;
 	}
 	if (!closest_object)
-		return (BACKGROUND_COLOR);
-	point = add_vector(origin, *(scale_vector(closest_t, direction))); //hit point on object
-	return (calculate_new_color(closest_object->type, closest_object->object, lights, point));
+		return (scene->background_color);
+	l_vector = malloc(sizeof(t_light_vector));
+	temp = scale_vector(closest_t, direction);
+	l_vector->point = add_vectur(*scene->origin, *temp);
+	free(temp);
+	l_vector->view = scale_vector(-1, direction);
+	final_color = calculate_new_color(closest_object, scene->lights, l_vectors);
+	free(l_vector->point);
+	free(l_vector->view);
+	free(l_vector);
+	return (final_color);
 }

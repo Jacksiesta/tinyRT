@@ -10,6 +10,14 @@ typedef struct	s_vector
 	float z;	
 }		t_vector;
 
+typedef struct	s_light_vector
+{
+	t_vector	*point;
+	t_vector	*normal;
+	t_vector	*view;
+	float		reflection;
+}		t_light_vector;
+
 typedef struct	s_rotation
 {
 	t_vector	*x;
