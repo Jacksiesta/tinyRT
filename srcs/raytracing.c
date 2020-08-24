@@ -29,21 +29,18 @@ float	compute_lighting(t_light_vector *l_vector, t_lstobject *lights)
 			n_dot_l = dot_vector(*l_vector->normal, *vec_l);
 			if (n_dot_l > 0) // ray outside 
 				intensity += light->intensity * n_dot_l / len_vector(*vec_l);
-			/* REFLECTION MATH */
+			/* REFLECTION MATH *//*
 			l_vector->reflection = -1;
 			if (l_vector->reflection != -1)
 			{
-				printf("l vector reflect issss %f\n", l_vector->reflection);
 				temp = scale_vector(2.0 * dot_vector(*l_vector->normal, *vec_l), *l_vector->normal);
 				vec_r = sub_vector(*temp, *vec_l);
 				free(temp);
 				r_dot_v = dot_vector(*vec_r, *l_vector->view);
 				if (r_dot_v > 0)
-				{
 					intensity += light->intensity * pow(r_dot_v / (len_vector(*vec_r) * length_v), l_vector->reflection);
-				}
 				free(vec_r);
-			}	
+			}*/	
 			if (light->type == TYPE_POINT)
 				free(vec_l);
 		}
@@ -91,6 +88,7 @@ int	calculate_new_color(t_lstobject *object, t_lstobject *lights, t_light_vector
 	{
 		printf("reflection is %f\n", l_vector->reflection);
 		l_vector->reflection = ((t_sphere *)object)->reflection;
+		color = 
 		color = color_to_rgb(((t_sphere *)object)->color);
 		new_color = scale_vector(compute_lighting(l_vector, lights), *color);
 		free(l_vector->normal);
