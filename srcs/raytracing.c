@@ -30,8 +30,10 @@ float	compute_lighting(t_light_vector *l_vector, t_lstobject *lights)
 			if (n_dot_l > 0) // ray outside 
 				intensity += light->intensity * n_dot_l / len_vector(*vec_l);
 			/* REFLECTION MATH */
+			l_vector->reflection = -1;
 			if (l_vector->reflection != -1)
 			{
+				printf("l vector reflect issss %f\n", l_vector->reflection);
 				temp = scale_vector(2.0 * dot_vector(*l_vector->normal, *vec_l), *l_vector->normal);
 				vec_r = sub_vector(*temp, *vec_l);
 				free(temp);
@@ -79,24 +81,15 @@ int	calculate_new_color(t_lstobject *object, t_lstobject *lights, t_light_vector
 	void		*obj;
 	t_vector	*color;
 	t_vector	*new_color;
-	t_vector	*point;
 
 	obj = object->object;
-	printf("rhello\n");
-	printf("center x %f \n", ((t_sphere *)obj)->center->x);
-	printf("center y %f \n", ((t_sphere *)obj)->center->y);
-	printf("center z %f \n", ((t_sphere *)obj)->center->z);
-	printf("l vector point x is %f\n", l_vector->point->x);
-	printf("l vector point y is %f\n", l_vector->point->y);
-	printf("l vector point z is %f\n", l_vector->point->z);
-	point = l_vector->point;
-	printf(" point x is %f\n", point->x);
-	normal = sub_vector(*point, *(((t_sphere *)object)->center)); // get to center with dir of point
+	normal = sub_vector(*l_vector->point, *(((t_sphere *)obj)->center)); // get to center with dir of point
 	printf("i'm here\n");
 	l_vector->normal = scale_vector(1 / len_vector(*normal), *normal); // scale from center
 	free(normal);
 	if (object->type == TYPE_SPHERE)
 	{
+		printf("reflection is %f\n", l_vector->reflection);
 		l_vector->reflection = ((t_sphere *)object)->reflection;
 		color = color_to_rgb(((t_sphere *)object)->color);
 		new_color = scale_vector(compute_lighting(l_vector, lights), *color);
@@ -141,18 +134,16 @@ int	trace_ray(t_vector direction, t_scene *scene)
 		return (scene->background_color);
 	l_vector = malloc(sizeof(t_light_vector));
 	temp = scale_vector(closest_t, direction);
-	printf("scene origin is %f\n", scene->origin->z);
 	l_vector->point = add_vector(*scene->origin, *(temp));
 	free(temp);
 	l_vector->view = scale_vector(-1, direction);
-	printf("direction %f %f %f \n", direction.x, direction.y, direction.z);
-	printf("pont is %f %f %f\n", l_vector->point->x, l_vector->point->y, l_vector->point->z);
-	printf("view is %f %f %f\n", l_vector->view->x, l_vector->view->y, l_vector->view->z);
+	//printf("direction %f %f %f \n", direction.x, direction.y, direction.z);
+	//printf("pont is %f %f %f\n", l_vector->point->x, l_vector->point->y, l_vector->point->z);
+	//printf("view is %f %f %f\n", l_vector->view->x, l_vector->view->y, l_vector->view->z);
 	final_color = calculate_new_color(closest_object, scene->lights, l_vector);
-	printf("yes\n");
 	free(l_vector->point);
 	free(l_vector->view);
 	free(l_vector);
-	printf("%i\n", final_color);
+	printf("final color %i\n", final_color);
 	return (final_color);
 }

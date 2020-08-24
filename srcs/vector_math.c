@@ -17,7 +17,6 @@ t_vector		*add_vector(t_vector v1, t_vector v2)
 
 t_vector		*sub_vector(t_vector v1, t_vector v2)
 {
-	printf("sub\n");
 	return (new_vector(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z));
 }
 
