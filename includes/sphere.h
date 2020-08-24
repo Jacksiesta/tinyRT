@@ -9,6 +9,8 @@ typedef struct	s_sphere
 	t_vector 	*center;
 	float 		radius;
 	int		color;
+	float		shiny;
+	float		reflection;
 }		t_sphere;
 
 t_sphere	*new_sphere(float radius, int color, float reflection, t_vector *center);
