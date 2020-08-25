@@ -28,6 +28,7 @@ SRC_NAME = miniRT.c \
 		lstobjects.c \
 		intersect.c \
 		plan.c \
+		rotation.c \
 		utils/get_next_line.c
 
 SRC = $(addprefix $(SRC_PATH)/,$(SRC_NAME))

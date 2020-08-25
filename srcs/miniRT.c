@@ -47,7 +47,7 @@ int		main(void)
 	set_vector(((t_sphere *)((t_lstobject *)((t_lstobject *)lstobj->next)->next)->object)->center, -2, 2, 4);
 	set_reflection(((t_sphere *)((t_lstobject *)((t_lstobject *)lstobj->next)->next)->object), 0.5);
 	/** PLANE **/
-	((t_lstobject *)((t_lstobject *)lstobj->next)->next)->next = new_obj(TYPE_PLAN, new_plan(new_vector(0, -1.5, 3), new_vector(1, -3, 0), 0xd10f42));
+	((t_lstobject *)((t_lstobject *)lstobj->next)->next)->next = new_obj(TYPE_PLAN, new_plan(new_vector(0, -1.5, 3), new_vector(0.2, -0.8, 0), 0xd10f42));
 	/** LIGHTS **/
 	lstlight = new_obj(TYPE_LIGHT, new_default_light(TYPE_AMBIENT, 0.2));
 	lstlight->next = (t_lstobject *)new_obj(TYPE_LIGHT, new_default_light(TYPE_POINT, 0.5));

@@ -46,5 +46,10 @@ void		rearrange_rgb(t_vector *vector);
 
 /* ROTATION */
 t_rotation	*new_rotation(t_vector *rota_x, t_vector *rota_y, t_vector *rota_z);
+void		rx(t_vector *v, float x);
+void		ry(t_vector *v, float y);
+void		rz(t_vector *v, float z);
+void		rot(t_vector *v, t_vector *angle);
+void		anti_rot(t_vector *v, t_vector *angle);
 
 #endif
