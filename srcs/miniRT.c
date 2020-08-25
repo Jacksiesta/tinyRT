@@ -33,7 +33,7 @@ int		main(void)
 
 	/**	WINDOW **/
 	mlx_ptr = mlx_init();
-	viewport = new_canvas(500, 500, 1);
+	viewport = new_canvas(700, 700, 4);
 	win_ptr = mlx_new_window(mlx_ptr, viewport->width, viewport->height, "miniRT");
 	/** SPHERES & O **/
 	obs = new_vector(0, 0, -5);
@@ -46,6 +46,8 @@ int		main(void)
 	((t_lstobject *)lstobj->next)->next = new_obj(TYPE_SPHERE, new_default_sphere(1, 0xf1c40f)); //yellow
 	set_vector(((t_sphere *)((t_lstobject *)((t_lstobject *)lstobj->next)->next)->object)->center, -2, 2, 4);
 	set_reflection(((t_sphere *)((t_lstobject *)((t_lstobject *)lstobj->next)->next)->object), 0.5);
+	/** PLANE **/
+	((t_lstobject *)((t_lstobject *)lstobj->next)->next)->next = new_obj(TYPE_PLAN, new_plan(new_vector(0, -1.5, 3), new_vector(1, -3, 0), 0xd10f42));
 	/** LIGHTS **/
 	lstlight = new_obj(TYPE_LIGHT, new_default_light(TYPE_AMBIENT, 0.2));
 	lstlight->next = (t_lstobject *)new_obj(TYPE_LIGHT, new_default_light(TYPE_POINT, 0.5));

@@ -6,7 +6,7 @@ typedef struct	s_plan
 	t_vector	*point;
 	t_vector	*normal;
 	float		shiny;
-	float		reflective;
+	float		reflection;
 	int		color;	
 }		t_plan;
 

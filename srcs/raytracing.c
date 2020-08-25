@@ -80,13 +80,31 @@ int	calculate_new_color(t_lstobject *object, t_lstobject *lights, t_light_vector
 	t_vector	*new_color;
 
 	obj = object->object;
-	normal = sub_vector(*l_vector->point, *(((t_sphere *)obj)->center)); // get to center with dir of point
+	if (object->type == TYPE_SPHERE)
+		normal = sub_vector(*l_vector->point, *(((t_sphere *)obj)->center)); // get to center with dir of point
+	else if (object->type == TYPE_PLAN)
+		normal = sub_vector(*l_vector->point, *(((t_plan *)obj)->point));
 	l_vector->normal = scale_vector(1 / len_vector(*normal), *normal); // scale from center
 	free(normal);
 	if (object->type == TYPE_SPHERE)
 	{
 		l_vector->reflection = ((t_sphere *)obj)->reflection;
 		color = color_to_rgb(((t_sphere *)obj)->color);
+		new_color = scale_vector(compute_lighting(l_vector, lights), *color);
+		free(l_vector->normal);
+		free(color);
+		rearrange_rgb(new_color);
+		ret_color = rgb_to_color(new_color);
+		free(new_color);
+		return (ret_color);
+	}
+	else if (object->type == TYPE_PLAN)
+	{
+		printf("nonononononononnoo\n");
+		l_vector->reflection = ((t_plan *)obj)->reflection;
+		//l_vector->reflection = 0.5;
+		printf("reflection plane is %f\n", l_vector->reflection);
+		color = color_to_rgb(((t_plan *)obj)->color);		
 		new_color = scale_vector(compute_lighting(l_vector, lights), *color);
 		free(l_vector->normal);
 		free(color);
@@ -117,8 +135,12 @@ int	trace_ray(t_vector direction, t_scene *scene)
 	{
 		if (objects->type == TYPE_SPHERE)
 			t_temp = intersect_sphere(*scene->origin, direction, objects->object);
+		if (objects->type == TYPE_PLAN)
+		{
+			t_temp = intersect_plan(*scene->origin, direction, objects->object);
+		}
 		// t_min < t_temp < t_max
-		if (t_temp > scene->t_min && (t_temp <  scene->t_max || scene->t_max == -1) && (t_temp < closest_t || closest_t == -1))
+		if (t_temp > scene->t_min && (t_temp < scene->t_max || scene->t_max == -1) && (t_temp < closest_t || closest_t == -1))
 		{
 			closest_t = t_temp;
 			closest_object = objects;

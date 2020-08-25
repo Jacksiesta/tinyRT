@@ -9,9 +9,9 @@ float	intersect_plan(t_vector origin, t_vector direction, t_plan *object)
 	
 	touch = 0;
 	temp = dot_vector(*object->normal, *object->point);
-	A = dot_vector(origin, *object->normal) - temp;
+	A = temp - dot_vector(origin, *object->normal);
 	B = dot_vector(direction, *object->normal);
-	touch = -(A / B);
+	touch = A / B;
 	if (touch < 0)
 		return (0);
 	return (touch);
