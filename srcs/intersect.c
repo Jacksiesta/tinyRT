@@ -53,3 +53,13 @@ float	intersect_square(t_vector origin, t_vector direction, t_square *sq)
 		return (touch);
 	return (0); 
 }
+/*
+float	intersect_triangle(t_vector origin, t_vector direction, t_triangle *tr)
+{
+	t_vector	*ab;
+	t_vector	*ac;
+	
+	ab = sub_vector(*tr->b, *tr->a);
+	ac = sub_vector(*tr->c, *tr->a);
+	//cross prod 	
+}*/
