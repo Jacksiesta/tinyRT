@@ -20,6 +20,7 @@
 #include "light.h"
 #include "scene.h"
 #include "intersect.h"
+#include "square.h"
 #include "get_next_line.h"
 #include "raytracing.h"
 
