@@ -21,6 +21,7 @@
 #include "scene.h"
 #include "intersect.h"
 #include "square.h"
+#include "triangle.h"
 #include "get_next_line.h"
 #include "raytracing.h"
 

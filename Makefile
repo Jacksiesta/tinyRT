@@ -14,6 +14,7 @@ INCLUDES = includes/miniRT.h\
 		includes/intersect.h\
 		includes/plan.h\
 		includes/square.h\
+		includes/triangle.h\
 		includes/get_next_line.h
 
 SRC_PATH = srcs
@@ -31,6 +32,7 @@ SRC_NAME = miniRT.c \
 		plan.c \
 		square.c \
 		rotation.c \
+		triangle.c \
 		utils/get_next_line.c
 
 SRC = $(addprefix $(SRC_PATH)/,$(SRC_NAME))

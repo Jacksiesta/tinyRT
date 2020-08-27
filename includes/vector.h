@@ -32,6 +32,7 @@ float		len_vector(t_vector v);
 t_vector	*sub_vector(t_vector v1, t_vector v2);
 t_vector	*add_vector(t_vector v1, t_vector v2);
 t_vector	*scale_vector(float c, t_vector v);
+t_vector	*cross_product(t_vector v1, t_vector v2);
 
 /* VECTOR */
 
