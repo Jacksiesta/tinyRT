@@ -40,9 +40,9 @@ int		main(void)
 	lstobj = new_obj(TYPE_SPHERE, new_default_sphere(1, 0xff0074)); //pink
 	set_vector(((t_sphere *)lstobj->object)->center, 0, -1.5, 3);
 	set_reflection((t_sphere *)lstobj->object, 0.4);
-	//lstobj->next = new_obj(TYPE_SPHERE, new_default_sphere(1, 0x00cccc)); //blue
-	//set_vector(((t_sphere *)((t_lstobject *)lstobj->next)->object)->center, 2, 0, 7);
-	//set_reflection(((t_sphere *)((t_lstobject *)lstobj->next)->object), 0.9);
+	lstobj->next = new_obj(TYPE_SPHERE, new_default_sphere(1, 0x00cccc)); //blue
+	set_vector(((t_sphere *)((t_lstobject *)lstobj->next)->object)->center, 2, 0, 7);
+	set_reflection(((t_sphere *)((t_lstobject *)lstobj->next)->object), 0.9);
 	//((t_lstobject *)lstobj->next)->next = new_obj(TYPE_SPHERE, new_default_sphere(1, 0xf1c40f)); //yellow
 	//set_vector(((t_sphere *)((t_lstobject *)((t_lstobject *)lstobj->next)->next)->object)->center, -2, 2, 4);
 	//set_reflection(((t_sphere *)((t_lstobject *)((t_lstobject *)lstobj->next)->next)->object), 0.5);
@@ -50,16 +50,16 @@ int		main(void)
 	//lstobj->next = new_obj(TYPE_PLAN, new_plan(new_vector(0, -1.5, 3), new_vector(0, 0, -0.5), 0xd10f42));
 	//((t_lstobject *)((t_lstobject *)lstobj->next)->next)->next = new_obj(TYPE_PLAN, new_plan(new_vector(0, -1.5, 3), new_vector(0.2, -0.8, 0), 0xd10f42));
 	/** SQUARE**/
-	lstobj->next = new_obj(TYPE_SQUARE, new_square(new_vector(0, -0.5, 2), new_vector(0.1, 0.1, 0.1), 3, 0x5bc898));
+	//lstobj->next = new_obj(TYPE_SQUARE, new_square(new_vector(0, -0.5, 2), new_vector(0.1, 0.1, 0.1), 3, 0x5bc898));
 	//(((t_lstobject *)((t_lstobject *)(t_lstobject *)lstobj->next))->next = new_obj(TYPE_SQUARE, new_square(new_vector(2, 0, 7), new_vector(0.1, 0.1, 0.1), 5, 0xfbd0c1)));
 	/** TRIANGLE **/
-	((t_lstobject *)lstobj->next)->next = new_obj(TYPE_TRIANGLE, new_triangle(new_vector(-1, -1, 3), new_vector(2, 2, 5), new_vector(4, 1, 2), 0xe922bf));
+	((t_lstobject *)lstobj->next)->next = new_obj(TYPE_TRIANGLE, new_triangle(new_vector(-2, 2, 3), new_vector(1, -1, 5), new_vector(2, 1, 2), 0x9cf0ea));
 	/** LIGHTS **/
-	lstlight = new_obj(TYPE_LIGHT, new_default_light(TYPE_AMBIENT, 0.2));
+	lstlight = new_obj(TYPE_LIGHT, new_default_light(TYPE_AMBIENT, 0.3));
 	lstlight->next = (t_lstobject *)new_obj(TYPE_LIGHT, new_default_light(TYPE_POINT, 0.5));
 	set_vector(((t_light *)((t_lstobject *)lstlight->next)->object)->vector, -3, 1, -1);
-	((t_lstobject *)lstlight->next)->next = new_obj(TYPE_LIGHT, new_default_light(TYPE_DIRECTIONAL, 0.7));
-	set_vector(((t_light *)((t_lstobject *)((t_lstobject *)lstlight->next)->next)->object)->vector, 0, -15, -5);
+	((t_lstobject *)lstlight->next)->next = new_obj(TYPE_LIGHT, new_default_light(TYPE_DIRECTIONAL, 0.1));
+	set_vector(((t_light *)((t_lstobject *)((t_lstobject *)lstlight->next)->next)->object)->vector, 0, -5, -5);
 	scene = new_scene(obs, lstobj, lstlight, 0x0); // fill info in scene
 	/** RENDERING **/
 	x = -(viewport->width/2) + 1;

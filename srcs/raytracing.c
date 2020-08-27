@@ -87,7 +87,7 @@ int	calculate_new_color(t_lstobject *object, t_lstobject *lights, t_light_vector
 	else if (object->type == TYPE_SQUARE)
 		normal = sub_vector(*l_vector->point, *(((t_square *)obj)->center));
 	else if (object->type == TYPE_TRIANGLE)
-		normal = sub_vector(*l_vector->point, *(((t_triangle *)obj)->a));
+		normal = sub_vector(*l_vector->point, *(((t_triangle *)obj)->a)); // ->a ??
 	l_vector->normal = scale_vector(1 / len_vector(*normal), *normal); // scale from center
 	free(normal);
 	if (object->type == TYPE_SPHERE)
@@ -118,8 +118,8 @@ int	calculate_new_color(t_lstobject *object, t_lstobject *lights, t_light_vector
 	}
 	else if (object->type == TYPE_SQUARE)
 	{
-		
 		l_vector->reflection = ((t_square *)obj)->reflection;
+		//l_vector->reflection = 0.01;
 		color = color_to_rgb(((t_square *)obj)->color);
 		new_color = scale_vector(compute_lighting(l_vector, lights), *color);
 		free(l_vector->normal);
@@ -132,10 +132,13 @@ int	calculate_new_color(t_lstobject *object, t_lstobject *lights, t_light_vector
 	else if (object->type == TYPE_TRIANGLE)
 	{
 		l_vector->reflection = ((t_triangle *)obj)->reflection;
+		//l_vector->reflection = 0.01;
+		printf("reflection is %f\n", l_vector->reflection);
 		color = color_to_rgb(((t_triangle *)obj)->color);
 		new_color = scale_vector(compute_lighting(l_vector, lights), *color);
 		free(l_vector->normal);
 		free(color);
+		rearrange_rgb(new_color);
 		ret_color = rgb_to_color(new_color);
 		free(new_color);
 		return (ret_color);

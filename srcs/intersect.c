@@ -53,7 +53,7 @@ float	intersect_square(t_vector origin, t_vector direction, t_square *sq)
 		return (touch);
 	return (0); 
 }
-
+/*
 float	intersect_triangle(t_vector origin, t_vector direction, t_triangle *tr)
 {
 	t_vector	*ab;
@@ -67,7 +67,10 @@ float	intersect_triangle(t_vector origin, t_vector direction, t_triangle *tr)
 	float		C;
 	float		D;
 	float		E;
+	float		denom;
 	float		touch;
+	float		r1;
+	float		r2;
 	
 	ab = sub_vector(*tr->b, *tr->a);
 	ac = sub_vector(*tr->c, *tr->a);
@@ -84,33 +87,64 @@ float	intersect_triangle(t_vector origin, t_vector direction, t_triangle *tr)
 	point = add_vector(origin, *var);
 	free(var);
 	p = sub_vector(*point, *tr->a);
-	if (dot_vector(*normal, *cross_product(*ab, *p)) >= 0)
-	{
-		ab = sub_vector(*tr->c, *tr->b);
-		p = sub_vector(*point, *tr->b);
-		if (dot_vector(*normal, *cross_product(*ab, *p)) >= 0)
-		{
-			ab = sub_vector(*tr->a, *tr->c);
-			p = sub_vector(*point, *tr->c);
-			if (dot_vector(*normal, *cross_product(*ab, *p)) >= 0)
-				return (touch);	
-		}	
-	}
-	return (0);
-
-	/*
-	temp = dot_vector(*ab, *ac) * dot_vector(*ab, *ac);
-	temp -= dot_vector(*ab, *ab) * dot_vector(*ac, *ac);
-	A = dot_vector(*ab, *ab) * dot_vector(*ap, *ac);
-	A -= dot_vector(*ac, *ac) * dot_vector(*ap, *ab);
-	A = A / temp;
-	if (A < 0 && A > 1)
+	A = dot_vector(*ab, *ab);
+	B = dot_vector(*ab, *ac);
+	C = dot_vector(*ac, *ac);
+	D = dot_vector(*p, *ab);
+	E = dot_vector(*p, *ac);
+	denom = B * B - A * C;
+	r1 = (B * E - C * D) / denom;
+	if (r1 < 0 || r1 > 1)
 		return (0);
-	B = dot_vector(*ab, *ac) * dot_vector(*ap, *ab);
-	B -= dot_vector(*ab, *ab) * dot_vector(*ap, *ac);
-	B = B / temp;
-	if (B < 0 && B > 1)
+	r2 = (B * D - A * E) / denom;
 		return (0);
-	return (touch);*/
+	return (touch);
+}*/
 
+float		intersect_triangle(t_vector origin, t_vector direction, t_triangle *tr)
+{
+	t_vector 	*point;
+	t_vector 	*temp;
+	float 		denom;
+	float 		A;
+	float		B;
+	float 		touch;
+	t_vector 	*u;
+	t_vector 	*v;
+	t_vector 	*w;
+	t_vector 	*normal;
+	float 		r1;
+	float		r2;
+	float		uu;
+	float		uv;
+	float		vv;
+	float		wu;
+	float		wv;
+	
+	u = sub_vector(*tr->b, *tr->a);
+	v = sub_vector(*tr->c, *tr->a);
+	normal = cross_product(*u, *v);
+	denom = dot_vector(*normal, *tr->a);
+	A = denom - dot_vector(origin, *normal);
+	B = dot_vector(direction, *normal);
+	touch = A / B;
+	if (touch < 0)
+		return (0);
+	temp = scale_vector(touch, direction);
+	point = add_vector(origin, *temp);
+	free(temp);
+	w = sub_vector(*point, *tr->a);
+	uu = dot_vector(*u, *u);
+	uv = dot_vector(*u, *v);
+	vv = dot_vector(*v, *v);
+	wu = dot_vector(*w, *u);
+	wv = dot_vector(*w, *v);
+	denom = uv * uv - uu * vv;
+	r1 = (uv * wv - vv * wu) / denom;
+	if (r1 < 0 || r1 > 1)
+		return (0);
+	r2 = (uv * wu - uu * wv) / denom;
+	if (r2 < 0 || (r2 + r1 > 1))
+		return (0);
+	return (touch);
 }
