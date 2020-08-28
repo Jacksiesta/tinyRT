@@ -132,7 +132,7 @@ int	calculate_new_color(t_lstobject *object, t_lstobject *lights, t_light_vector
 	else if (object->type == TYPE_TRIANGLE)
 	{
 		l_vector->reflection = ((t_triangle *)obj)->reflection;
-		//l_vector->reflection = 0.01;
+		l_vector->reflection = 0.2;
 		printf("reflection is %f\n", l_vector->reflection);
 		color = color_to_rgb(((t_triangle *)obj)->color);
 		new_color = scale_vector(compute_lighting(l_vector, lights), *color);

@@ -29,6 +29,7 @@ typedef struct	s_rotation
 
 float		dot_vector(t_vector v1, t_vector v2);
 float		len_vector(t_vector v);
+float		distance_points(t_vector a, t_vector b);
 t_vector	*sub_vector(t_vector v1, t_vector v2);
 t_vector	*add_vector(t_vector v1, t_vector v2);
 t_vector	*scale_vector(float c, t_vector v);

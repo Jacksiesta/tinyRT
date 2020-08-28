@@ -148,3 +148,73 @@ float		intersect_triangle(t_vector origin, t_vector direction, t_triangle *tr)
 		return (0);
 	return (touch);
 }
+
+float	intersect_cyl(t_vector origin, t_vector direction, t_cylinder *cy)
+{
+	float		A;
+	float		B;
+	float		C;
+	float		discr;
+	float		root1;
+	float		root2;
+	float		size;
+	float		ret;
+	t_vector	*x;
+	float		*var[4];
+	t_vector	*tmp;
+	t_vector	*tmp2;
+	t_vector	*point;
+	t_vector	*point_tmp;
+
+	x = sub_vector(origin, *cy->center);
+	var[0] = 1.0 / dot_vector(*cy->orientation, *cy->orientation);
+	var[1] = dot_vector(direction, *cy->orientation);
+	var[2] = dot_vector(*x, *x);
+	var[3] = dot_vector(*cy->orientation, *x);
+	A = dot_vector(direction, direction) - (var[0] * var[1] * var[1]);
+	B = 2.0 * (dot_vector(direction, *x)) - (2 * var[0] * var[1] * var[3]);
+	C = var[2] - ((cy->diameter / 2) * (cy->diameter / 2.0)) - (var[0] * var[3] * var[3]);
+	free(x);
+	discr = B * B - 4 * A * C;
+	root1 = (-B + sqrt(discr)) / 2 * A;
+	root2 = (-B - sqrt(discr)) / 2 * A;
+	if (root1 < root2)
+		ret = root1;
+	else
+		ret = root2;
+	if (ret == 0)
+		return (0);
+
+	size = distance_points(*cy->point1, *cy->point2);
+	tmp = scale_vector(ret, direction);
+	point = add_vector(origin, *tmp);
+	free(tmp);
+	/** POINT 1 **/
+	discr = dot_vector(*cy->orientation, *cy->point1);
+	var[0] = discr - dot_vector(*point, *cy->orientation);
+	var[1] = dot_vector(*cy->orientation, *cy->orientation);
+	var[2] = var[0] / var[1];
+	tmp = scale_vector(var[2], *cy->orientation);
+	point_tmp = add_vector(*point, *tmp);
+	free(tmp);
+	/** POINT 2 **/
+	discr = dot_vector(*cy->orientation, *cy->point2);
+	var[0] = discr - dot_vector(*point, *cy->orientation);
+	tmp2 = scale_vector(-1, *cy->orientation);
+	var[1] = dot_vector(*tmp2, *cy->orientation);
+	var[2] = var[0] / var[1];
+	tmp = scale_vector(var[2], *tmp2);
+	point_tmp = add_vector(*point, *tmp);
+	free(tmp2);
+	free(tmp);
+	/** var[3] == dist between points **/
+	var[3] = distance_points(*point, *point_tmp);
+	free(point_tmp);
+	free(point);
+	// 277 //
+
+
+
+
+	
+}

@@ -23,6 +23,7 @@
 #include "square.h"
 #include "triangle.h"
 #include "camera.h"
+#include "cylinder.h"
 #include "get_next_line.h"
 #include "raytracing.h"
 

@@ -53,7 +53,7 @@ int		main(void)
 	//lstobj->next = new_obj(TYPE_SQUARE, new_square(new_vector(0, -0.5, 2), new_vector(0.1, 0.1, 0.1), 3, 0x5bc898));
 	//(((t_lstobject *)((t_lstobject *)(t_lstobject *)lstobj->next))->next = new_obj(TYPE_SQUARE, new_square(new_vector(2, 0, 7), new_vector(0.1, 0.1, 0.1), 5, 0xfbd0c1)));
 	/** TRIANGLE **/
-	((t_lstobject *)lstobj->next)->next = new_obj(TYPE_TRIANGLE, new_triangle(new_vector(-2, 2, 3), new_vector(1, -1, 5), new_vector(2, 1, 2), 0x9cf0ea));
+	((t_lstobject *)lstobj->next)->next = new_obj(TYPE_TRIANGLE, new_triangle(new_vector(-2, 0, 1), new_vector(2, 0, 2), new_vector(0, 4, 3), 0x9cf0ea));
 	/** LIGHTS **/
 	lstlight = new_obj(TYPE_LIGHT, new_default_light(TYPE_AMBIENT, 0.3));
 	lstlight->next = (t_lstobject *)new_obj(TYPE_LIGHT, new_default_light(TYPE_POINT, 0.5));
