@@ -55,7 +55,7 @@ int		main(void)
 	/** TRIANGLE **/
 	//((t_lstobject *)lstobj->next)->next = new_obj(TYPE_TRIANGLE, new_triangle(new_vector(-2, 0, 1), new_vector(2, 0, 2), new_vector(0, 4, 3), 0x9cf0ea));
 	/**CYLINDER **/
-	((t_lstobject *)lstobj->next)->next = new_obj(TYPE_CYLINDER, new_cylinder(new_vector(-1, 1, 5), new_vector(0.2, -0.2, 0.2), 2, 3));
+	((t_lstobject *)lstobj->next)->next = new_obj(TYPE_CYLINDER, new_cylinder(new_vector(0, 1, 5), new_vector(0.2, -0.1, 0.2), 1.5, 15));
 	/** LIGHTS **/
 	lstlight = new_obj(TYPE_LIGHT, new_default_light(TYPE_AMBIENT, 0.3));
 	lstlight->next = (t_lstobject *)new_obj(TYPE_LIGHT, new_default_light(TYPE_POINT, 0.5));

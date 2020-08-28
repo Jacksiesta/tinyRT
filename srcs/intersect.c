@@ -149,6 +149,132 @@ float		intersect_triangle(t_vector origin, t_vector direction, t_triangle *tr)
 	return (touch);
 }
 
+float		intersect_cyl(t_vector origin, t_vector direction, t_cylinder *object)
+{
+	float A;
+	float B;
+	float C;
+	float delta;
+	t_vector *temp;
+	t_vector *point;
+	float t[2];
+	float tmp[4];
+	float ret;
+	float size;
+
+	t_vector *x = sub_vector(origin, *object->center);
+	tmp[0] = 1.0 / dot_vector(*object->orientation, *object->orientation);
+	tmp[1] = dot_vector(direction, *object->orientation);
+	tmp[2] = dot_vector(*x, *x);
+	tmp[3] = dot_vector(*object->orientation, *x);
+	A = dot_vector(direction, direction) - (tmp[1] * tmp[1] * tmp[0]);
+	B = 2.0 * (dot_vector(direction, *x)) - (2 * tmp[1] * tmp[3] * tmp[0]);
+	C = tmp[2] - ((object->diameter / 2.0) * (object->diameter / 2.0)) - ((tmp[3] * tmp[3]) * tmp[0]);
+	free(x);
+	delta = (B * B) - (4 * A * C);
+	if (delta < 0)
+		return (0);
+	t[0] = (- B + sqrt(delta)) / (2.0 * A);
+	t[1] = (- B - sqrt(delta)) / (2.0 * A);
+	//free(difference);
+	if (t[0] < t[1])
+		ret = t[0];
+	else
+		ret = t[1];
+	if (ret == 0)
+		return (0);
+	size = distance_points(*object->point1, *object->point2);
+	float denom;
+	float l[2];
+	float tt;
+	float d[4];
+	//s_vector *pt;
+	temp = scale_vector(ret, direction);
+	point = add_vector(origin, *temp);
+	free(temp);
+
+	t_vector *point_tmp;
+	denom = -(dot_vector(*object->orientation, *object->point1));
+	l[0] = dot_vector(*point, *object->orientation) + denom;
+	l[1] = dot_vector(*object->orientation, *object->orientation);
+	tt = - (l[0] / l[1]);
+	temp = scale_vector(tt, *object->orientation);
+	point_tmp = add_vector(*point, *temp);
+	free(temp);
+	d[2] = distance_points(*point, *point_tmp);
+	free(point_tmp);
+
+	t_vector *temp2;
+	denom = -(dot_vector(*object->orientation, *object->point2));
+	l[0] = dot_vector(*point, *object->orientation) + denom;
+	temp2 = scale_vector(-1, *object->orientation);
+	l[1] = dot_vector(*temp2, *object->orientation);
+	tt = - (l[0] / l[1]);
+	temp = scale_vector(tt, *temp2);
+	point_tmp = add_vector(*point, *temp);
+	free(temp2);
+	free(temp);
+	d[3] = distance_points(*point, *point_tmp);
+	free(point_tmp);
+	free(point);
+
+	tt = 0;
+	denom = -(dot_vector(*object->orientation, *object->point1));
+	l[0] = dot_vector(origin, *object->orientation) + denom;
+	l[1] = dot_vector(direction, *object->orientation);
+	tt = - (l[0] / l[1]);
+	if (tt > 0)
+	{
+		temp = scale_vector(tt, direction);
+		point = add_vector(origin, *temp);
+		free(temp);
+		d[0] = distance_points(*point, *object->point1);
+		d[1] = distance_points(*point, origin);
+		if (d[0] < object->diameter / 2)
+		{
+			if (!(d[2] > size || d[3] > size))
+			{
+				return (ret);
+			}
+			free(point);
+			return (tt);
+		}
+		free(point);
+	}
+	tt = 0;
+	denom = -(dot_vector(*object->orientation, *object->point2));
+	l[0] = dot_vector(origin, *object->orientation) + denom;
+	l[1] = dot_vector(direction, *object->orientation);
+	tt = - (l[0] / l[1]);
+	if (tt > 0)
+	{
+		temp = scale_vector(tt, direction);
+		point = add_vector(origin, *temp);
+		free(temp);
+		d[0] = distance_points(*point, *object->point2);
+		d[1] = distance_points(*point, origin);
+		if (d[0] < object->diameter / 2)
+		{
+			if (!(d[2] > size || d[3] > size))
+			{
+				return (ret);
+			}
+			free(point);
+			return (tt);
+		}
+		free(point);
+	}
+	if ((d[2] > size || d[3] > size))
+	{
+		return (0);
+	}
+	return (ret);
+}
+
+
+
+
+/*
 float	intersect_cyl(t_vector origin, t_vector direction, t_cylinder *cy)
 {
 	float		A;
@@ -191,8 +317,8 @@ float	intersect_cyl(t_vector origin, t_vector direction, t_cylinder *cy)
 	size = distance_points(*cy->point1, *cy->point2);
 	tmp = scale_vector(ret, direction);
 	point = add_vector(origin, *tmp);
-	free(tmp);
-	/** POINT 1 **/
+	free(tmp); 
+	// POINT 1 
 	discr = dot_vector(*cy->orientation, *cy->point1);
 	A = discr - dot_vector(*point, *cy->orientation);
 	B = dot_vector(*cy->orientation, *cy->orientation);
@@ -203,7 +329,7 @@ float	intersect_cyl(t_vector origin, t_vector direction, t_cylinder *cy)
 	d[2] = distance_points(*point, *point_tmp);
 	free(point_tmp);
 
-	/** POINT 2 **/
+	// POINT 2 
 	discr = dot_vector(*cy->orientation, *cy->point2);
 	A = discr - dot_vector(*point, *cy->orientation);
 	tmp2 = scale_vector(-1, *cy->orientation);
@@ -213,12 +339,12 @@ float	intersect_cyl(t_vector origin, t_vector direction, t_cylinder *cy)
 	point_tmp = add_vector(*point, *tmp);
 	free(tmp2);
 	free(tmp);
-	/** var[3] == dist between points **/
+	// var[3] == dist between points
 	d[3] = distance_points(*point, *point_tmp);
 	free(point_tmp);
 	free(point);
 	
-	/** POINT 1 **/
+	// POINT 1
 	C = 0;
 	discr = dot_vector(*cy->orientation, *cy->point1);
 	A = discr - dot_vector(*point, *cy->orientation);
@@ -241,7 +367,7 @@ float	intersect_cyl(t_vector origin, t_vector direction, t_cylinder *cy)
 		free(point);
 	}
 
-	/* * POINT 2 **/
+	// POINT 2
 	C = 0;
 	discr = dot_vector(*cy->orientation, *cy->point2);
 	A = discr - dot_vector(*point, *cy->orientation);
@@ -267,10 +393,4 @@ float	intersect_cyl(t_vector origin, t_vector direction, t_cylinder *cy)
 		return (0);
 	printf("ROOT %f\n", ret);
 	return (0);
-
-
-
-
-
-	
-}
+} */
