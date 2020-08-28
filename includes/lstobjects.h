@@ -8,6 +8,7 @@
 # define TYPE_LIGHT 2
 # define TYPE_SQUARE 3
 # define TYPE_TRIANGLE 4
+# define TYPE_CYLINDER 5
 
 typedef struct s_lstobject
 {

@@ -160,12 +160,15 @@ float	intersect_cyl(t_vector origin, t_vector direction, t_cylinder *cy)
 	float		size;
 	float		ret;
 	t_vector	*x;
-	float		*var[4];
+	float		var[4];
+	float		d[4];
 	t_vector	*tmp;
 	t_vector	*tmp2;
 	t_vector	*point;
 	t_vector	*point_tmp;
 
+	//printf("center is %f %f %f \n", cy->center->x, cy->center->y, cy->center->z);
+	//printf("origin is %f %f %f \n", origin.x, origin.y, origin.z);
 	x = sub_vector(origin, *cy->center);
 	var[0] = 1.0 / dot_vector(*cy->orientation, *cy->orientation);
 	var[1] = dot_vector(direction, *cy->orientation);
@@ -191,27 +194,80 @@ float	intersect_cyl(t_vector origin, t_vector direction, t_cylinder *cy)
 	free(tmp);
 	/** POINT 1 **/
 	discr = dot_vector(*cy->orientation, *cy->point1);
-	var[0] = discr - dot_vector(*point, *cy->orientation);
-	var[1] = dot_vector(*cy->orientation, *cy->orientation);
-	var[2] = var[0] / var[1];
-	tmp = scale_vector(var[2], *cy->orientation);
+	A = discr - dot_vector(*point, *cy->orientation);
+	B = dot_vector(*cy->orientation, *cy->orientation);
+	C = A / B;
+	tmp = scale_vector(C, *cy->orientation);
 	point_tmp = add_vector(*point, *tmp);
 	free(tmp);
+	d[2] = distance_points(*point, *point_tmp);
+	free(point_tmp);
+
 	/** POINT 2 **/
 	discr = dot_vector(*cy->orientation, *cy->point2);
-	var[0] = discr - dot_vector(*point, *cy->orientation);
+	A = discr - dot_vector(*point, *cy->orientation);
 	tmp2 = scale_vector(-1, *cy->orientation);
-	var[1] = dot_vector(*tmp2, *cy->orientation);
-	var[2] = var[0] / var[1];
-	tmp = scale_vector(var[2], *tmp2);
+	B = dot_vector(*tmp2, *cy->orientation);
+	C = A / B;
+	tmp = scale_vector(C, *tmp2);
 	point_tmp = add_vector(*point, *tmp);
 	free(tmp2);
 	free(tmp);
 	/** var[3] == dist between points **/
-	var[3] = distance_points(*point, *point_tmp);
+	d[3] = distance_points(*point, *point_tmp);
 	free(point_tmp);
 	free(point);
-	// 277 //
+	
+	/** POINT 1 **/
+	C = 0;
+	discr = dot_vector(*cy->orientation, *cy->point1);
+	A = discr - dot_vector(*point, *cy->orientation);
+	B = dot_vector(direction, *cy->orientation);
+	C = A / B;
+	if (C > 0)
+	{
+		tmp = scale_vector(C, direction);
+		point = add_vector(origin, *tmp);
+		free(tmp);
+		d[0] = distance_points(*point, *cy->point2);
+		d[1] = distance_points(*point, origin);
+		if (d[0] < cy->diameter / 2)
+		{
+			if (!(d[2] > size || d[3] > size))
+				return (ret);
+			free(point);
+			return (C);
+		} 	
+		free(point);
+	}
+
+	/* * POINT 2 **/
+	C = 0;
+	discr = dot_vector(*cy->orientation, *cy->point2);
+	A = discr - dot_vector(*point, *cy->orientation);
+	B = dot_vector(direction, *cy->orientation);
+	C = A / B;
+	if (C > 0)
+	{
+		tmp = scale_vector(C, direction);
+		point = add_vector(origin, *tmp);
+		free(tmp);
+		d[0] = distance_points(*point, *cy->point1);
+		d[1] = distance_points(*point, origin);
+		if (d[0] < cy->diameter / 2)
+		{
+			if (!(d[2] > size || d[3] > size))	
+				return (ret);
+			free(point);
+			return (C);
+		}
+		free(point);
+	}
+	if ((d[2] > 0 || d[3] > size))
+		return (0);
+	printf("ROOT %f\n", ret);
+	return (0);
+
 
 
 

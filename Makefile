@@ -15,6 +15,7 @@ INCLUDES = includes/miniRT.h\
 		includes/plan.h\
 		includes/square.h\
 		includes/triangle.h\
+		includes/cylinder.h\
 		includes/camera.h\
 		includes/get_next_line.h
 
@@ -34,6 +35,7 @@ SRC_NAME = miniRT.c \
 		square.c \
 		rotation.c \
 		triangle.c \
+		cylinder.c \
 		camera.c \
 		utils/get_next_line.c
 

@@ -88,6 +88,8 @@ int	calculate_new_color(t_lstobject *object, t_lstobject *lights, t_light_vector
 		normal = sub_vector(*l_vector->point, *(((t_square *)obj)->center));
 	else if (object->type == TYPE_TRIANGLE)
 		normal = sub_vector(*l_vector->point, *(((t_triangle *)obj)->a)); // ->a ??
+	else if (object->type == TYPE_CYLINDER)
+		normal = sub_vector(*l_vector->point, *(((t_cylinder *)obj)->center));
 	l_vector->normal = scale_vector(1 / len_vector(*normal), *normal); // scale from center
 	free(normal);
 	if (object->type == TYPE_SPHERE)
@@ -143,6 +145,18 @@ int	calculate_new_color(t_lstobject *object, t_lstobject *lights, t_light_vector
 		free(new_color);
 		return (ret_color);
 	}
+	else if (object->type == TYPE_CYLINDER)
+	{
+		l_vector->reflection = ((t_cylinder *)obj)->reflection;
+		color = color_to_rgb(((t_cylinder *)obj)->color);
+		new_color = scale_vector(compute_lighting(l_vector, lights), *color);
+		free(l_vector->normal);
+		free(color);
+		rearrange_rgb(new_color);
+		ret_color = rgb_to_color(new_color);
+		free(new_color);
+		return (ret_color);
+	}
 	free(l_vector->normal);
 	return (BACKGROUND_COLOR);
 }
@@ -172,6 +186,10 @@ int	trace_ray(t_vector direction, t_scene *scene)
 		if (objects->type == TYPE_TRIANGLE)
 		{
 			t_temp = intersect_triangle(*scene->origin, direction, objects->object);	
+		}
+		if (objects->type == TYPE_CYLINDER)
+		{
+			t_temp = intersect_cyl(*scene->origin, direction, objects->object);	
 		}
 		// t_min < t_temp < t_max
 		if (t_temp > scene->t_min && (t_temp < scene->t_max || scene->t_max == -1) && (t_temp < closest_t || closest_t == -1))

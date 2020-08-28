@@ -13,4 +13,6 @@ typedef struct	s_cylinder
 	float		reflection;
 }		t_cylinder;
 
+t_cylinder	*new_cylinder(t_vector *center, t_vector *orientation, float diameter, float h);
+
 #endif
