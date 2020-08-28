@@ -6,7 +6,6 @@ t_cylinder	*new_cylinder(t_vector *center, t_vector *orientation, float diameter
 	t_vector	*var;
 	float		denom;
 
-
 	cylinder = malloc(sizeof(t_cylinder));
 	cylinder->center = center;
 	cylinder->orientation = orientation;
@@ -21,7 +20,7 @@ t_cylinder	*new_cylinder(t_vector *center, t_vector *orientation, float diameter
 	free(var);
 	cylinder->diameter = diameter;
 	cylinder->height = h;
-	cylinder->color = 0xf4b835; 
+	cylinder->color = 0xd8b5ed; 
 	cylinder->reflection = -1;
 	return (cylinder);	
 }
