@@ -49,19 +49,19 @@ float	compute_lighting(t_light_vector *l_vector, t_lstobject *lights)
 	return (intensity);	
 }
 
-float	intersect_sphere(t_vector obs, t_vector direction, t_sphere *object)
+float	intersect_sphere(t_vector obs, t_vector direction, t_sphere *sp)
 {
-	t_vector	*difference;
+	t_vector	*diff;
 	float		discr;
 	float		k[3];
 	float		r[2];
 	
-	difference = new_vector(obs.x - object->center->x, obs.y - object->center->y, obs.z - object->center->z);
+	diff = new_vector(obs.x - sp->center->x, obs.y - sp->center->y, obs.z - sp->center->z);
 	k[0] = dot_vector(direction, direction);
-	k[1] = 2 * dot_vector(*difference, direction);
-	k[2] = dot_vector(*difference, *difference) - (object->radius * object->radius);
+	k[1] = 2 * dot_vector(*diff, direction);
+	k[2] = dot_vector(*diff, *diff) - (sp->radius * sp->radius);
 	discr = k[1] * k[1] - 4 * k[0] * k[2]; // B * B - 4 * A * C
-	free(difference);
+	free(diff);
 	if (discr < 0) // no intersection
 		return (0);
 	r[0] = (-k[1] + ft_squrt_bin(discr)) / (2 * k[0]);
@@ -135,7 +135,7 @@ int	calculate_new_color(t_lstobject *object, t_lstobject *lights, t_light_vector
 	{
 		l_vector->reflection = ((t_triangle *)obj)->reflection;
 		l_vector->reflection = 0.2;
-		printf("reflection is %f\n", l_vector->reflection);
+		//printf("reflection is %f\n", l_vector->reflection);
 		color = color_to_rgb(((t_triangle *)obj)->color);
 		new_color = scale_vector(compute_lighting(l_vector, lights), *color);
 		free(l_vector->normal);
@@ -184,13 +184,9 @@ int	trace_ray(t_vector direction, t_scene *scene)
 		if (objects->type == TYPE_SQUARE)
 			t_temp = intersect_square(*scene->origin, direction, objects->object);
 		if (objects->type == TYPE_TRIANGLE)
-		{
 			t_temp = intersect_triangle(*scene->origin, direction, objects->object);	
-		}
 		if (objects->type == TYPE_CYLINDER)
-		{
 			t_temp = intersect_cyl(*scene->origin, direction, objects->object);	
-		}
 		// t_min < t_temp < t_max
 		if (t_temp > scene->t_min && (t_temp < scene->t_max || scene->t_max == -1) && (t_temp < closest_t || closest_t == -1))
 		{
@@ -206,9 +202,6 @@ int	trace_ray(t_vector direction, t_scene *scene)
 	l_vector->point = add_vector(*scene->origin, *(temp));
 	free(temp);
 	l_vector->view = scale_vector(-1, direction);
-	//printf("direction %f %f %f \n", direction.x, direction.y, direction.z);
-	//printf("pont is %f %f %f\n", l_vector->point->x, l_vector->point->y, l_vector->point->z);
-	//printf("view is %f %f %f\n", l_vector->view->x, l_vector->view->y, l_vector->view->z);
 	final_color = calculate_new_color(closest_object, scene->lights, l_vector);
 	free(l_vector->point);
 	free(l_vector->view);

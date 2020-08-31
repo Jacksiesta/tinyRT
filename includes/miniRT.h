@@ -25,6 +25,8 @@
 #include "camera.h"
 #include "cylinder.h"
 #include "get_next_line.h"
+#include "parsing.h"
+#include "utils.h"
 #include "raytracing.h"
 
 float		ft_squrt_bin(float x);

@@ -53,53 +53,6 @@ float	intersect_square(t_vector origin, t_vector direction, t_square *sq)
 		return (touch);
 	return (0); 
 }
-/*
-float	intersect_triangle(t_vector origin, t_vector direction, t_triangle *tr)
-{
-	t_vector	*ab;
-	t_vector	*ac;
-	t_vector	*normal;
-	t_vector	*var;
-	t_vector	*point;
-	t_vector	*p;
-	float		A;
-	float		B;
-	float		C;
-	float		D;
-	float		E;
-	float		denom;
-	float		touch;
-	float		r1;
-	float		r2;
-	
-	ab = sub_vector(*tr->b, *tr->a);
-	ac = sub_vector(*tr->c, *tr->a);
-	//cross prod of (ab x ac) to get normal
-	normal = new_vector(ab->x * ac->y - ab->y * ac->x, ab->y * ac->z - ab->z * ac->y, ab->z * ac->x - ab->x * ac->z);
-	C = dot_vector(*normal, *tr->a);
-	A = C - dot_vector(*normal, *tr->a);
-	B = dot_vector(direction, *normal);
-	touch = A / B;
-	printf("touch is %f\n", touch);
-	if (touch < 0)
-		return (0);
-	var = scale_vector(touch, direction);
-	point = add_vector(origin, *var);
-	free(var);
-	p = sub_vector(*point, *tr->a);
-	A = dot_vector(*ab, *ab);
-	B = dot_vector(*ab, *ac);
-	C = dot_vector(*ac, *ac);
-	D = dot_vector(*p, *ab);
-	E = dot_vector(*p, *ac);
-	denom = B * B - A * C;
-	r1 = (B * E - C * D) / denom;
-	if (r1 < 0 || r1 > 1)
-		return (0);
-	r2 = (B * D - A * E) / denom;
-		return (0);
-	return (touch);
-}*/
 
 float		intersect_triangle(t_vector origin, t_vector direction, t_triangle *tr)
 {
@@ -113,8 +66,6 @@ float		intersect_triangle(t_vector origin, t_vector direction, t_triangle *tr)
 	t_vector 	*v;
 	t_vector 	*w;
 	t_vector 	*normal;
-	float 		r1;
-	float		r2;
 	float		uu;
 	float		uv;
 	float		vv;
@@ -140,16 +91,16 @@ float		intersect_triangle(t_vector origin, t_vector direction, t_triangle *tr)
 	wu = dot_vector(*w, *u);
 	wv = dot_vector(*w, *v);
 	denom = uv * uv - uu * vv;
-	r1 = (uv * wv - vv * wu) / denom;
-	if (r1 < 0 || r1 > 1)
+	A = (uv * wv - vv * wu) / denom;
+	if (A < 0 || A > 1)
 		return (0);
-	r2 = (uv * wu - uu * wv) / denom;
-	if (r2 < 0 || (r2 + r1 > 1))
+	B = (uv * wu - uu * wv) / denom;
+	if (B < 0 || (B + A > 1))
 		return (0);
 	return (touch);
 }
 
-// i = -1 if inverse of ray needed , otherwise 1
+// i = -1 if inverse of ray needed , otherwise 1, only for cylinder atm
 float		calc_discr(t_cylinder *cy, t_vector *point, t_vector *p, int i)
 {
 	float 		A;
@@ -235,6 +186,7 @@ float		intersect_cyl(t_vector origin, t_vector direction, t_cylinder *cy)
 	B = dot_vector(direction, *cy->orientation);
 	C = A / B;
 	//C = calc_discr(cy, point, cy->point1, 1);
+	// point 1 cap //
 	if (C > 0)
 	{
 		temp = scale_vector(C, direction);
@@ -254,7 +206,7 @@ float		intersect_cyl(t_vector origin, t_vector direction, t_cylinder *cy)
 	B = dot_vector(direction, *cy->orientation);
 	C = A / B;
 	//C = calc_discr(cy, point, cy->point1, 1);
-	// cap //
+	// point 2 cap //
 	if (C > 0)
 	{
 		temp = scale_vector(C, direction);
@@ -264,6 +216,8 @@ float		intersect_cyl(t_vector origin, t_vector direction, t_cylinder *cy)
 		free(point);
 		if (d[0] < cy->diameter / 2)
 		{
+			printf("C is %f\n", C);
+			printf("ret is %f\n", ret);
 			if (!(d[2] > size || d[3] > size))
 				return (ret);
 			return (C);
@@ -271,5 +225,6 @@ float		intersect_cyl(t_vector origin, t_vector direction, t_cylinder *cy)
 	}
 	if ((d[2] > size || d[3] > size))
 		return (0);
+	// return infinite cylinder segment aka the body//
 	return (ret);
 }
