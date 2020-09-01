@@ -9,6 +9,11 @@ typedef struct 	s_scene
 	int		background_color;
 	float		t_min;
 	float		t_max;		
+	float		depth;
+	t_lstobject	*camera;
+	t_canvas	*viewplane;
+	t_canvas	*viewport;
+	
 }			t_scene;
 
 t_scene		*new_scene(t_lstobject *camera, t_lstobject *objects, t_lstobject *lights, int color);

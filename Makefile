@@ -41,6 +41,7 @@ SRC_NAME = miniRT.c \
 		camera.c \
 		parsing/parsing.c \
 		utils/atoi.c \
+		utils/leaks.c \
 		utils/get_next_line.c
 
 SRC = $(addprefix $(SRC_PATH)/,$(SRC_NAME))

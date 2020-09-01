@@ -12,9 +12,10 @@ typedef struct 	s_light
 {
 	int		type;
 	float		intensity;
-	t_vector	*vector;	
+	t_vector	*vector;
+	int		color;	
 }		t_light;
 
-t_light		*new_default_light(int type, float intensity);
+t_light		*new_default_light(int type, float intensity, int color);
 
 #endif

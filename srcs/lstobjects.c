@@ -14,7 +14,7 @@ t_lstobject		*new_obj(int type, void *object)
 
 int			add_back(t_lstobject **lst, int type, void *object)
 {
-	t_lstobejct	*start;
+	t_lstobject	*start;
 	
 	if (!object)
 		return (-1);

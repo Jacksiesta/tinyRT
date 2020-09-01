@@ -9,6 +9,7 @@
 # define TYPE_SQUARE 3
 # define TYPE_TRIANGLE 4
 # define TYPE_CYLINDER 5
+# define TYPE_CAMERA 6
 
 typedef struct s_lstobject
 {
