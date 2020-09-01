@@ -18,5 +18,6 @@ typedef struct s_lstobject
 }		t_lstobject;
 
 t_lstobject	*new_obj(int type, void *object);
+int		add_back(t_lstobject **lst, int type, void *object);
 
 #endif
