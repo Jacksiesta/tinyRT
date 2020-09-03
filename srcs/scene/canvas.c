@@ -1,6 +1,6 @@
-#include "../includes/canvas.h"
-#include "../includes/miniRT.h"
-#include "../includes/vector.h"
+#include "../../includes/canvas.h"
+#include "../../includes/miniRT.h"
+#include "../../includes/vector.h"
 
 t_canvas	*new_canvas(int width, int height, int distance)
 {

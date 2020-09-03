@@ -1,4 +1,4 @@
-#include "../includes/sphere.h"
+#include "../../includes/sphere.h"
 
 t_sphere	*new_sphere(float radius, int color, float reflection, t_vector *center)
 {

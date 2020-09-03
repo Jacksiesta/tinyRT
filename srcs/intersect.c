@@ -14,7 +14,6 @@ float	intersect_plan(t_vector origin, t_vector direction, t_plan *object)
 	touch = A / B;
 	if (touch < 0)
 		return (0);
-	printf("touch is %f\n", touch);
 	return (touch);
 }
 

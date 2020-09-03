@@ -17,6 +17,17 @@ float	ft_squrt_bin(float x)
 	return (j);
 }
 
+void	putimage(char *data, int bpp, int size_line, int x, int y, int color)
+{
+	int 	i;
+
+	i = (x * (bpp / 8)) + (y * size_line);
+	data[i] = color;
+	data[++i] = color >> 8;
+	data[++i] = color >> 16;
+}
+
+
 int		main(void)
 {
 	void			*mlx_ptr;

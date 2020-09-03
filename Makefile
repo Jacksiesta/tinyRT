@@ -23,22 +23,22 @@ INCLUDES = includes/miniRT.h\
 
 SRC_PATH = srcs
 SRC_NAME = miniRT.c \
-		sphere.c \
-		canvas.c \
-		light.c \
+		scene/camera.c \
+		scene/canvas.c \
+		scene/cylinder.c \
+		scene/light.c \
+		scene/lstobjects.c \
+		scene/plan.c \
+		scene/scene.c \
+		scene/sphere.c \
+		scene/square.c \
+		scene/triangle.c \
+		math/rotation.c \
+		math/vector.c \
+		math/vector_color.c \
+		math/vector_math.c \
 		raytracing.c \
-		vector_math.c \
-		vector_color.c \
-		vector.c \
-		scene.c \
-		lstobjects.c \
 		intersect.c \
-		plan.c \
-		square.c \
-		rotation.c \
-		triangle.c \
-		cylinder.c \
-		camera.c \
 		parsing/parsing.c \
 		utils/atoi.c \
 		utils/leaks.c \

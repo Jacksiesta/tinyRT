@@ -1,4 +1,4 @@
-#include "../includes/miniRT.h"
+#include "../../includes/miniRT.h"
 
 t_vector	*color_to_rgb(unsigned int color)
 {

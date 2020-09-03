@@ -1,4 +1,4 @@
-#include "../includes/miniRT.h"
+#include "../../includes/miniRT.h"
 
 t_scene		*new_scene(t_lstobject *camera, t_lstobject *objects, t_lstobject *lights, int color)
 {

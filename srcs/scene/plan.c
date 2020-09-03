@@ -1,4 +1,4 @@
-#include "../includes/miniRT.h"
+#include "../../includes/miniRT.h"
 
 t_plan	*new_plan(t_vector *p, t_vector *norm, int c)
 {

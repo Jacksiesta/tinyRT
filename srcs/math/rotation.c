@@ -1,4 +1,4 @@
-#include "../includes/miniRT.h"
+#include "../../includes/miniRT.h"
 
 t_rotation	*new_rotation(t_vector *rota_x, t_vector *rota_y, t_vector *rota_z)
 {

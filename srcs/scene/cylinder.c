@@ -1,4 +1,4 @@
-#include "../includes/miniRT.h"
+#include "../../includes/miniRT.h"
 
 t_cylinder	*new_cylinder(t_vector *center, t_vector *orientation, float diameter, float h)
 {

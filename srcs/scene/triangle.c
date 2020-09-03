@@ -1,4 +1,4 @@
-#include "../includes/miniRT.h"
+#include "../../includes/miniRT.h"
 
 t_triangle	*new_triangle(t_vector *a, t_vector *b, t_vector *c, int color)
 {

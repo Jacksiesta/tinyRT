@@ -1,4 +1,4 @@
-#include "../includes/lstobjects.h"
+#include "../../includes/lstobjects.h"
 
 t_lstobject		*new_obj(int type, void *object)
 {
