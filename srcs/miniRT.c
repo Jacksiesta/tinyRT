@@ -57,10 +57,10 @@ int		main(void)
 	/**CYLINDER **/
 	((t_lstobject *)lstobj->next)->next = new_obj(TYPE_CYLINDER, new_cylinder(new_vector(0, 1, 5), new_vector(0.2, -0.1, 0.2), 1.5, 15));
 	/** LIGHTS **/
-	lstlight = new_obj(TYPE_LIGHT, new_default_light(TYPE_AMBIENT, 0.3));
-	lstlight->next = (t_lstobject *)new_obj(TYPE_LIGHT, new_default_light(TYPE_POINT, 0.5));
+	lstlight = new_obj(TYPE_LIGHT, new_default_light(TYPE_AMBIENT, 0.3, 0xffffff));
+	lstlight->next = (t_lstobject *)new_obj(TYPE_LIGHT, new_default_light(TYPE_POINT, 0.5, 0xffffff));
 	set_vector(((t_light *)((t_lstobject *)lstlight->next)->object)->vector, -3, 1, -1);
-	((t_lstobject *)lstlight->next)->next = new_obj(TYPE_LIGHT, new_default_light(TYPE_DIRECTIONAL, 0.1));
+	((t_lstobject *)lstlight->next)->next = new_obj(TYPE_LIGHT, new_default_light(TYPE_DIRECTIONAL, 0.1, 0xffffff));
 	set_vector(((t_light *)((t_lstobject *)((t_lstobject *)lstlight->next)->next)->object)->vector, 0, -5, -5);
 	scene = new_scene(obs, lstobj, lstlight, 0x0); // fill info in scene
 	/** RENDERING **/

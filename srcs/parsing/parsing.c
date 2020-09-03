@@ -134,12 +134,12 @@ int	parsing_camera(t_scene **scene, char *line)
 	{
 		while (line[x] == ' ' || line[x] == '\t')
 			x++;
-		if (n < 2 && (line[x] < '0' || line[x] > '9') && line[x] != '-' && (r = ft_atov(&line[x], &vec) < 0))
+		if (n < 2 && (line[x] < '0' || line[x] > '9') && line[x] != '-' && (r = ft_atov(&line[x], &vec[n]) < 0))
 			return (mult_free_ret(vec, n - 1));
 		if (n == 2 && (line[x] < '0' || line[x] > '9') && (r = ft_atoi(&line[x], &FOV) < 0))
 			return (mult_free_ret(vec, 2));
 	}
-	if (line[x] && line[x] != ' ' || line[x] != '\t')
+	if (line[x] && line[x] != ' ' && line[x] != '\t')
 		return (mult_free_ret(vec, 2));
 	//if (add_back(&(*scene)->camera, TYPE_CAMERA, new_camera(vec[0], vec[1], FOV)))
 	//	return (0);
