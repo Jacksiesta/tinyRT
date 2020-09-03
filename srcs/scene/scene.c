@@ -8,7 +8,7 @@ t_scene		*new_scene(t_lstobject *camera, t_lstobject *objects, t_lstobject *ligh
 	//scene->origin = origin;
 	scene->viewport = NULL;
 	scene->viewplane = NULL;
-	scene->camera = camera;
+	//scene->camera = camera;
 	scene->objects = objects;
 	scene->lights = lights;
 	scene->background_color = color;

@@ -27,7 +27,6 @@ void	putimage(char *data, int bpp, int size_line, int x, int y, int color)
 	data[++i] = color >> 16;
 }
 
-
 int		main(void)
 {
 	void			*mlx_ptr;
@@ -37,10 +36,12 @@ int		main(void)
 	t_vector		*direction;
 	t_lstobject		*lstobj;
 	t_lstobject		*lstlight;
+	t_camera		*camera;
 	int			color;
 	int			x;
 	int			y;
 	t_scene			*scene;
+	t_vector		*rot;
 
 	/**	WINDOW **/
 	mlx_ptr = mlx_init();
@@ -48,6 +49,8 @@ int		main(void)
 	win_ptr = mlx_new_window(mlx_ptr, viewport->width, viewport->height, "miniRT");
 	/** SPHERES & O **/
 	obs = new_vector(0, 0, -5);
+	//rot = new_vector(0.001, 0.003, 0);
+	//camera = new_camera(obs, rot, 10);
 	lstobj = new_obj(TYPE_SPHERE, new_default_sphere(1, 0xff0074)); //pink
 	set_vector(((t_sphere *)lstobj->object)->center, 0, -1.5, 3);
 	set_reflection((t_sphere *)lstobj->object, 0.4);
@@ -84,6 +87,7 @@ int		main(void)
 			//printf("(%f, %f) \n", (x + (viewport->width/2)), (y + (viewport->height/2)));
 			//printf("reflection sphere 1 is %f\n", ((t_sphere *)lstobj->object)->reflection);
 			direction = new_vector(x / viewport->width, y / viewport->height, 1);
+			printf("direction is %f %f %f \n", direction->x, direction->y, direction->z);
 			//color = trace_ray(*obs, *direction, lstobj, lstlight);
 			color = trace_ray(*direction, scene);
 			if (color != BACKGROUND_COLOR)

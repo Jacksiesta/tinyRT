@@ -56,6 +56,7 @@ float	intersect_sphere(t_vector obs, t_vector direction, t_sphere *sp)
 	float		k[3];
 	float		r[2];
 	
+	printf("hello?\n");
 	diff = new_vector(obs.x - sp->center->x, obs.y - sp->center->y, obs.z - sp->center->z);
 	k[0] = dot_vector(direction, direction);
 	k[1] = 2 * dot_vector(*diff, direction);
@@ -177,8 +178,12 @@ int	trace_ray(t_vector direction, t_scene *scene)
 	objects = scene->objects;
 	while (objects) // check all objects present to find closest_object
 	{
+		printf("in trace ray\n");
 		if (objects->type == TYPE_SPHERE)
+		{
+			printf("yez spherez\n");
 			t_temp = intersect_sphere(*scene->origin, direction, objects->object);
+		}
 		if (objects->type == TYPE_PLAN)
 			t_temp = intersect_plan(*scene->origin, direction, objects->object);
 		if (objects->type == TYPE_SQUARE)
