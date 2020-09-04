@@ -1,5 +1,28 @@
 #include "../includes/miniRT.h"
 
+float	intersect_sphere(t_vector obs, t_vector direction, t_sphere *sp)
+{
+	t_vector	*diff;
+	float		discr;
+	float		k[3];
+	float		r[2];
+	
+	printf("hello?\n");
+	diff = new_vector(obs.x - sp->center->x, obs.y - sp->center->y, obs.z - sp->center->z);
+	k[0] = dot_vector(direction, direction);
+	k[1] = 2 * dot_vector(*diff, direction);
+	k[2] = dot_vector(*diff, *diff) - (sp->radius * sp->radius);
+	discr = k[1] * k[1] - 4 * k[0] * k[2]; // B * B - 4 * A * C
+	free(diff);
+	if (discr < 0) // no intersection
+		return (0);
+	r[0] = (-k[1] + ft_squrt_bin(discr)) / (2 * k[0]);
+	r[1] = (-k[1] - ft_squrt_bin(discr)) / (2 * k[0]);
+	if (r[0] < r[1])
+		return (r[0]);
+	return (r[1]);
+}
+
 float	intersect_plan(t_vector origin, t_vector direction, t_plan *object)
 {
 	float	temp;

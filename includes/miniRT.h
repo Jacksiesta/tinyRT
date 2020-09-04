@@ -11,9 +11,9 @@
 #include <stdio.h>
 #include <string.h>
 #include  <math.h>
-//#include "minilibx_opengl_20191021/mlx.h"
 #include "mlx.h"
-//#include "vector.h"
+//#include "minilibx_opengl_20191021/mlx.h"
+#include "vector.h"
 #include "sphere.h"
 #include "canvas.h"
 #include "lstobjects.h"
