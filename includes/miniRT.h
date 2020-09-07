@@ -30,6 +30,6 @@
 #include "raytracing.h"
 
 float		ft_squrt_bin(float x);
-void		putimage(char *data, int bpp, int size_line, int x, int y, int color);
+//void		putimage(char *data, int bpp, int size_line, int x, int y, int color);
 
 #endif

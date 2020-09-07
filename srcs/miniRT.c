@@ -16,7 +16,7 @@ float	ft_squrt_bin(float x)
 	j = 0.5f * (j + x/j);
 	return (j);
 }
-
+/*
 void	putimage(char *data, int bpp, int size_line, int x, int y, int color)
 {
 	int 	i;
@@ -25,7 +25,7 @@ void	putimage(char *data, int bpp, int size_line, int x, int y, int color)
 	data[i] = color;
 	data[++i] = color >> 8;
 	data[++i] = color >> 16;
-}
+}*/
 
 int		main(void)
 {
