@@ -7,8 +7,8 @@ typedef struct	s_vector
 {
 	float x;
 	float y;
-	float z;	
-}		t_vector;
+	float z;
+}				t_vector;
 
 typedef struct	s_light_vector
 {
@@ -16,6 +16,7 @@ typedef struct	s_light_vector
 	t_vector	*normal;
 	t_vector	*view;
 	float		reflection;
+	float		shiny;
 }		t_light_vector;
 
 typedef struct	s_rotation

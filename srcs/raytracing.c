@@ -239,7 +239,6 @@ int	calculate_new_color(t_lstobject *objects, t_lstobject *lights, t_light_vecto
 	return (ret_color);
 }
 
-
 int	set_l_vec_and_calc(t_lstobject *closest_object, t_vector direction, float closest_t, t_scene *scene)
 {
 	int				final_color;
@@ -254,15 +253,15 @@ int	set_l_vec_and_calc(t_lstobject *closest_object, t_vector direction, float cl
 	free(temp);
 	l_vectors->view = scale_vector(-1, direction);
 	final_color = calculate_new_color(closest_object, scene->lights, l_vectors, scene);
-	if (closest_object->type == TYPE_SPHERE && (((t_sphere *)closest_object->object)->reflection > 0 && scene->depth > 0)
+	if (closest_object->type == TYPE_SPHERE && (((t_sphere *)closest_object->object)->reflection > 0 && scene->depth > 0))
 		final_color = color_with_reflect(closest_object, scene, l_vectors, final_color);
-	else if (closest_object->type == TYPE_PLAN && (((t_plan *)closest_object->object)->reflection > 0 && scene->depth > 0)
+	else if (closest_object->type == TYPE_PLAN && (((t_plan *)closest_object->object)->reflection > 0 && scene->depth > 0))
 		final_color = color_with_reflect(closest_object, scene, l_vectors, final_color);
-	else if (closest_object->type == TYPE_SQUARE && (((t_square *)closest_object->object)->reflection > 0 && scene->depth > 0)
+	else if (closest_object->type == TYPE_SQUARE && (((t_square *)closest_object->object)->reflection > 0 && scene->depth > 0))
 		final_color = color_with_reflect(closest_object, scene, l_vectors, final_color);
-	else if (closest_object->type == TYPE_TRIANGLE && (((t_triangle *)closest_object->object)->reflection > 0 && scene->depth > 0)
+	else if (closest_object->type == TYPE_TRIANGLE && (((t_triangle *)closest_object->object)->reflection > 0 && scene->depth > 0))
 		final_color = color_with_reflect(closest_object, scene, l_vectors, final_color);
-	else if (closest_object->type == TYPE_CYLINDER && (((t_cylinder *)closest_object->object)->reflection > 0 && scene->depth > 0)
+	else if (closest_object->type == TYPE_CYLINDER && (((t_cylinder *)closest_object->object)->reflection > 0 && scene->depth > 0))
 		final_color = color_with_reflect(closest_object, scene, l_vectors, final_color);
 	free(l_vectors->point);
 	free(l_vectors->normal);
@@ -280,6 +279,7 @@ float	closest_inters(t_vector origin, t_vector direction, t_scene *scene, t_lsto
 	*closest_object = NULL;
 	closest_t = -1;
 	objects = scene->objects;
+	printf("COUCOU\n");
 	while (objects)
 	{
 		if (objects->type == TYPE_SPHERE)

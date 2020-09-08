@@ -8,6 +8,7 @@ INCLUDES = includes/miniRT.h\
 		includes/vector.h\
 		includes/canvas.h\
 		includes/light.h\
+		includes/lighting.h\
 		includes/scene.h\
 		includes/lstobjects.h\
 		includes/raytracing.h\
@@ -37,6 +38,7 @@ SRC_NAME = miniRT.c \
 		math/vector.c \
 		math/vector_color.c \
 		math/vector_math.c \
+		lighting.c \
 		raytracing.c \
 		intersect.c \
 		parsing/parsing.c \

@@ -25,7 +25,7 @@ t_vector	*type_light(t_light_vector *l_vectors, t_light *light, t_scene *scene)
 	vec_l = NULL;
 	if (light->type == TYPE_POINT)
 	{
-		vec_l = sub_vector(*light_vector, *l_vectors->point);
+		vec_l = sub_vector(*vec_l, *l_vectors->point);
 		scene->t_max = 1;
 	}
 	else if (light->type == TYPE_DIRECTIONAL)
@@ -54,9 +54,9 @@ float	compute_special_lights(t_light_vector *l_vectors, t_light *light, t_scene 
 	{
 		n_dot_l = dot_vector(*l_vectors->normal, *vec_l);
 		if (n_dot_l > 0)
-			intensity += ((light->intensity * n_dot_l) / ((len_vector(*l_vectors->normal * len_vector(*vec_l)))));
-		if (l_vectors->shiny != -10
-			intensity += calcul_shiny(l_vectors, light, lenght_v, vec_l));
+			intensity += ((light->intensity * n_dot_l) / (len_vector(*l_vectors->normal) * len_vector(*vec_l)));
+		if (l_vectors->shiny != -10)
+			intensity += calcul_shiny(l_vectors, light, lenght_v, vec_l);
 	}
 	if (light->type == TYPE_POINT)
 		free(vec_l);
