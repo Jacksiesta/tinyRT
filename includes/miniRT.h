@@ -10,9 +10,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include  <math.h>
+#include <math.h>
 #include "mlx.h"
 //#include "minilibx_opengl_20191021/mlx.h"
+#include "lighting.h"
 #include "vector.h"
 #include "sphere.h"
 #include "canvas.h"

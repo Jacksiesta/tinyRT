@@ -1,6 +1,11 @@
 #ifndef SCENE_H
 # define SCENE_H
 
+#include "vector.h"
+#include "lstobjects.h"
+#include "canvas.h"
+#include "miniRT.h"
+
 typedef struct 	s_scene
 {
 	t_vector	*origin;

@@ -19,7 +19,6 @@ INCLUDES = includes/miniRT.h\
 		includes/cylinder.h\
 		includes/camera.h\
 		includes/utils.h\
-		includes/parsing.h\
 		includes/get_next_line.h
 
 SRC_PATH = srcs
@@ -41,7 +40,6 @@ SRC_NAME = miniRT.c \
 		lighting.c \
 		raytracing.c \
 		intersect.c \
-		parsing/parsing.c \
 		utils/atoi.c \
 		utils/leaks.c \
 		utils/get_next_line.c
