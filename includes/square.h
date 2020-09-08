@@ -11,7 +11,7 @@ typedef struct	s_square
 	t_vector	*d;
 	float		size;
 	int		color;
-	//float		shiny;
+	float		shiny;
 	float		reflection;	
 }		t_square;
 

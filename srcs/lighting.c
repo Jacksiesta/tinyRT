@@ -1,3 +1,5 @@
+#include "../includes/miniRT.h"
+
 float	calcul_shiny(t_light_vector *l_vectors, t_light *light, float lenght_v, t_vector *vec_l)
 {
 	float		r_dot_v;

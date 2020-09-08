@@ -187,7 +187,7 @@ int	color_with_reflect(t_lstobject *closest_object, t_scene *scene, t_light_vect
 
 int	calculate_new_color(t_lstobject *objects, t_lstobject *lights, t_light_vector *l_vectors, t_scene *scene)
 {
-	int		ret_color;
+	int			ret_color;
 	void		*obj;
 	t_vector	*new_color;
 	t_vector	*temp;
@@ -195,41 +195,41 @@ int	calculate_new_color(t_lstobject *objects, t_lstobject *lights, t_light_vecto
 	temp = NULL;
 	obj = objects->object;
 	if (objects->type == TYPE_SPHERE) // calculate norm
-		temp = sub_vector(*l_vectors->point, *(((t_sphere *)object)->center)); // get to center with dir of point
+		temp = sub_vector(*l_vectors->point, *(((t_sphere *)obj)->center)); // get to center with dir of point
 	else if (objects->type == TYPE_PLAN)
-		temp = sub_vector(*l_vectors->point, *(((t_plan *)object)->center));
+		temp = sub_vector(*l_vectors->point, *(((t_plan *)obj)->point));
 	else if (objects->type == TYPE_SQUARE)
-		temp = sub_vector(*l_vectors->point, *(((t_square *)object)->center));
+		temp = sub_vector(*l_vectors->point, *(((t_square *)obj)->center));
 	else if (objects->type == TYPE_TRIANGLE)
-		temp = sub_vector(*l_vectors->point, *(((t_triangle *)object)->center));
+		temp = sub_vector(*l_vectors->point, *(((t_triangle *)obj)->a));
 	else if (objects->type == TYPE_CYLINDER)
-		temp = sub_vector(*l_vectors->point, *(((t_cylinder *)object)->center));
+		temp = sub_vector(*l_vectors->point, *(((t_cylinder *)obj)->center));
 	l_vectors->normal = scale_vector(1 / len_vector(*temp), *temp); // scale from center
 	free(temp);
 	if (objects->type == TYPE_SPHERE)
 	{
-		l_vectors->shiny = ((t_sphere *)object)->shiny;
-		temp = color_to_rgb(((t_sphere *)object)->color);
+		l_vectors->shiny = ((t_sphere *)obj)->shiny;
+		temp = color_to_rgb(((t_sphere *)obj)->color);
 	}
 	else if (objects->type == TYPE_PLAN)
 	{
-		l_vectors->shiny = ((t_plan *)object)->shiny;
-		temp = color_to_rgb(((t_plan *)object)->color);
+		l_vectors->shiny = ((t_plan *)obj)->shiny;
+		temp = color_to_rgb(((t_plan *)obj)->color);
 	}
 	else if (objects->type == TYPE_SQUARE)
 	{
-		l_vectors->shiny = ((t_square *)object)->shiny;
-		temp = color_to_rgb(((t_square *)object)->color);
+		l_vectors->shiny = ((t_square *)obj)->shiny;
+		temp = color_to_rgb(((t_square *)obj)->color);
 	}
 	else if (objects->type == TYPE_TRIANGLE)
 	{
-		l_vectors->shiny = ((t_triangle *)object)->shiny;
-		temp = color_to_rgb(((t_triangle *)object)->color);
+		l_vectors->shiny = ((t_triangle *)obj)->shiny;
+		temp = color_to_rgb(((t_triangle *)obj)->color);
 	}
 	else if (objects->type == TYPE_CYLINDER)
 	{
-		l_vectors->shiny = ((t_cylinder *)object)->shiny;
-		temp = color_to_rgb(((t_cylinder *)object)->color);
+		l_vectors->shiny = ((t_cylinder *)obj)->shiny;
+		temp = color_to_rgb(((t_cylinder *)obj)->color);
 	}
 	new_color = scale_vector(compute_lighting(l_vectors, lights, scene), *temp);
 	free(temp);
@@ -242,9 +242,9 @@ int	calculate_new_color(t_lstobject *objects, t_lstobject *lights, t_light_vecto
 
 int	set_l_vec_and_calc(t_lstobject *closest_object, t_vector direction, float closest_t, t_scene *scene)
 {
-	int		final_color;
+	int				final_color;
 	t_light_vector	*l_vectors;
-	t_vector	*temp;
+	t_vector		*temp;
 
 	final_color = 0;
 	if (!(l_vectors = malloc(sizeof(t_light_vector))))
@@ -279,10 +279,9 @@ float	closest_inters(t_vector origin, t_vector direction, t_scene *scene, t_lsto
 
 	*closest_object = NULL;
 	closest_t = -1;
-	objects = scene->object;
+	objects = scene->objects;
 	while (objects)
 	{
-		
 		if (objects->type == TYPE_SPHERE)
 			t_temp = intersect_sphere(origin, direction, objects->object);
 		if (objects->type == TYPE_PLAN)
@@ -290,9 +289,9 @@ float	closest_inters(t_vector origin, t_vector direction, t_scene *scene, t_lsto
 		if (objects->type == TYPE_SQUARE)
 			t_temp = intersect_square(origin, direction, objects->object);
 		if (objects->type == TYPE_TRIANGLE)
-			t_temp = intersect_triangle(origin, direction, objects->object);	
+			t_temp = intersect_triangle(origin, direction, objects->object);
 		if (objects->type == TYPE_CYLINDER)
-			t_temp = intersect_cyl(origin, direction, objects->object);	
+			t_temp = intersect_cyl(origin, direction, objects->object);
 		// t_min < t_temp < t_max
 		if (t_temp > scene->t_min && (t_temp < scene->t_max || scene->t_max == -1) && (t_temp < closest_t || closest_t == -1))
 		{
