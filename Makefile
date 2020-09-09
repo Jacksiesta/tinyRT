@@ -56,7 +56,7 @@ $(MLX) :
 		make -C minilibx all
 
 clean :
-		rm -f srcs/$(OBJS)
+		rm -f $(OBJS)
 
 fclean :	clean
 		rm -f $(NAME)
