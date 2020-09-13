@@ -56,7 +56,8 @@ int main(int argc, char *argv[])
 	mlx_ptr = mlx_init();
 	mlx_img = mlx_new_image(mlx_ptr, scene->viewport->width, scene->viewport->height);
 	win_ptr = mlx_new_window(mlx_ptr, scene->viewport->width, scene->viewport->height, "miniRT");
-
+	//printf("CAMERA %i\n",((t_camera *)scene->camera->object)->rotation->x);
+	printf("ALLO??\n");
 	angle = new_vector(((t_camera *)scene->camera->object)->rotation->x/1 * 180, ((t_camera *)scene->camera->object)->rotation->y/1 * 180, ((t_camera *)scene->camera->object)->rotation->z/1 * 180);
 	x = -(scene->viewport->width/2);
 	data = mlx_get_data_addr(mlx_img, &bpp, &size_line, &endian);

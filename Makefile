@@ -2,7 +2,7 @@ CC = gcc
 FLAGS = -Wall -Werror -Wextra
 NAME = miniRT
 MLX = minilibx/libmlx.a
-MLX_FLAGS = -L minilibx -lmlx -framework OpenGL -framework AppKit
+MLX_FLAGS = -L minilibx -lmlx -framework OpenGL -framework AppKit -fsanitize=address
 INCLUDES = includes/miniRT.h\
 		includes/sphere.h\
 		includes/vector.h\

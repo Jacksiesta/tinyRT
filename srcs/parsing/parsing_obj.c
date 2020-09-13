@@ -26,7 +26,7 @@ int	parsing_sphere(t_scene **scene, char *line)
 	}		
 	if (line[x[0]] && line[x[0]] != ' ' && line[x[0]] != '\t')
 		return (free_and_ret_minus_one(center));
-	if (!line[x[0]] && (!(add_back(&(*scene)->objects, TYPE_SPHERE, new_sphere(radius, color, 10, center)))))
+	if (!line[x[0]] && (!(add_back(&(*scene)->object, TYPE_SPHERE, new_sphere(radius, color, 10, center)))))
 		return (0);
 	return (free_and_ret_minus_one(center));
 	//return (!l[i[0]] && (!(add_back(&(*scene)->objects, TYPE_SPHERE, new_sphere(radius, color, 10, center))) ? 0 : free_and_return_minus_one(center)));
@@ -59,7 +59,7 @@ int		parsing_plan(t_scene **scene, char *line)
 	}
 	if (line[x] && line[x] != ' ' && line[x] != '\t')
 		return (mult_free_ret(v, 2));
-	if (!(add_back(&(*scene)->objects, TYPE_PLAN, new_plan(v[0], v[1], color))))
+	if (!(add_back(&(*scene)->object, TYPE_PLAN, new_plan(v[0], v[1], color))))
 		return (0);
 	return (mult_free_ret(v, 2));
 	//return ((!(add_back(&(*scene)->objects, TYPE_PLAN, new_plan(vectors[0], vectors[1], color))) ? 0 : multiple_free_return(vectors, 2)));
@@ -95,7 +95,7 @@ int		parsing_square(t_scene **scene, char *line)
 	}
 	if (line[x] && line[x] != ' ' && line[x] != '\t')
 		return (mult_free_ret(v, 2));
-	if (!(add_back(&(*scene)->objects, TYPE_SQUARE, new_square(v[0], v[1], h, color))))
+	if (!(add_back(&(*scene)->object, TYPE_SQUARE, new_square(v[0], v[1], h, color))))
 		return (0);
 	return (mult_free_ret(v, 2));
 	//return ((!(add_back(&(*scene)->objects, TYPE_SQUARE, new_square(vectors[0], vectors[1], size, i[3]))) ? 0 : multiple_free_return(vectors, 2)));
@@ -126,7 +126,7 @@ int		parsing_triangle(t_scene **scene, char *line)
 	}
 	if (line[x] && line[x] != ' ' && line[x] != '\t')
 		return (mult_free_ret(v, 3));
-	if (!(add_back(&(*scene)->objects, TYPE_TRIANGLE, new_triangle(v[0], v[1], v[2], color))))
+	if (!(add_back(&(*scene)->object, TYPE_TRIANGLE, new_triangle(v[0], v[1], v[2], color))))
 		return (0);
 	return (mult_free_ret(v, 3));
 	//return ((!(add_back(&(*scene)->objects, TYPE_TRIANGLE, new_triangle(vec[0], vec[1], vec[2], i[3]))) ? 0 : multiple_free_return(vec, 2)));
@@ -163,7 +163,7 @@ int		parsing_cylinder(t_scene **scene, char *line)
 	}
 	if (line[x] && line[x] != ' ' && line[x] != '\t')
 		return (mult_free_ret(v, 2));
-	if (!(add_back(&(*scene)->objects, TYPE_CYLINDER, new_cylinder(v[0], v[1], d, h, color))))
+	if (!(add_back(&(*scene)->object, TYPE_CYLINDER, new_cylinder(v[0], v[1], d, h, color))))
 		return (0);
 	return (mult_free_ret(v, 2));
 	

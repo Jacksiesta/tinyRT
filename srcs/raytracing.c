@@ -234,7 +234,7 @@ float	closest_inters(t_vector origin, t_vector direction, t_scene *scene, t_lsto
 
 	*closest_object = NULL;
 	closest_t = -1;
-	objects = scene->objects;
+	objects = scene->object;
 	while (objects)
 	{
 		if (objects->type == TYPE_SPHERE)
