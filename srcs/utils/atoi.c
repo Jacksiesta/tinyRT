@@ -1,4 +1,5 @@
 #include "../../includes/miniRT.h"
+#include "../../includes/utils.h"
 
 int	ft_atoi(char *line, int *num)
 {

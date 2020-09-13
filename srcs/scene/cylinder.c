@@ -1,6 +1,6 @@
 #include "../../includes/miniRT.h"
 
-t_cylinder	*new_cylinder(t_vector *center, t_vector *orientation, float diameter, float h)
+t_cylinder	*new_cylinder(t_vector *center, t_vector *orientation, float diameter, float h, int color)
 {
 	t_cylinder	*cylinder;
 	t_vector	*var;
@@ -20,7 +20,7 @@ t_cylinder	*new_cylinder(t_vector *center, t_vector *orientation, float diameter
 	free(var);
 	cylinder->diameter = diameter;
 	cylinder->height = h;
-	cylinder->color = 0xd8b5ed; 
+	cylinder->color = color; 
 	cylinder->reflection = -1;
 	return (cylinder);	
 }

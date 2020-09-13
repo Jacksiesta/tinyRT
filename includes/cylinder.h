@@ -14,6 +14,6 @@ typedef struct	s_cylinder
 	float		shiny;
 }		t_cylinder;
 
-t_cylinder	*new_cylinder(t_vector *center, t_vector *orientation, float diameter, float h);
+t_cylinder	*new_cylinder(t_vector *center, t_vector *orientation, float diameter, float h, int color);
 
 #endif
