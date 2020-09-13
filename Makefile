@@ -39,6 +39,7 @@ SRC_NAME = miniRT.c \
 		math/vector_math.c \
 		lighting.c \
 		raytracing.c \
+		reflect.c \
 		intersect.c \
 		utils/atoi.c \
 		utils/leaks.c \

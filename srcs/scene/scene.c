@@ -1,6 +1,6 @@
 #include "../../includes/miniRT.h"
 
-t_scene		*new_scene(t_lstobject *camera, t_lstobject *objects, t_lstobject *lights, int color)
+t_scene		*new_scene(t_vector *origin, t_lstobject *objects, t_lstobject *lights, int color)
 {
 	t_scene	*scene;	
 	

@@ -21,7 +21,7 @@ typedef struct 	s_scene
 	
 }			t_scene;
 
-t_scene		*new_scene(t_lstobject *camera, t_lstobject *objects, t_lstobject *lights, int color);
+t_scene		*new_scene(t_vector *origin, t_lstobject *objects, t_lstobject *lights, int color);
 t_scene		*new_empty_scene(int color);
 
 
